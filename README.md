@@ -12,22 +12,24 @@ Does your team have the skills and coordination to climb to the top?
 **Note: Replace PATH with the rest of the path on your system**
 
 1. Clone this repository
-2. In PyCharm, do the following:
+3. In PyCharm, do the following:
    1. Go to File -> Settings -> Language & Frameworks -> Django
    2. Check the "Enable Django Support"
    3. Enter this for the project root: *PATH*\Fumble\Fumble_project
    4. The other fields should detect automatically, if not:
       1. Settings: *PATH*\Fumble\Fumble_project\Fumble_project\settings.py 
       2. Manage Script: *PATH*\Fumble\Fumble_project\manage.py
-3. Ensure you have a valid Python interpreter ready
+      
+4. Ensure you have a valid Python interpreter ready
    1. File -> Settings -> Project:Fumble -> Project Interpreter
    2. Hit the triple dots and select "Add"
    3. Select "Virtualenv Environment"
    4. Select this project's venv folder
-4. In the top right, select "Add Configuration"
-5. Hit the "+" and select Django server
-6. Enter "127.0.0.1" into the host field
-7. For the Python interpreter, it should be selected by default, if not:
+   
+5. In the top right, select "Add Configuration"
+6. Hit the "+" and select Django server
+7. Enter "127.0.0.1" into the host field
+8. For the Python interpreter, it should be selected by default, if not:
    1. Select the interpreter you made earlier
 
 ### Running the app
