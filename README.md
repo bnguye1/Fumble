@@ -5,11 +5,14 @@
 **Note: Replace PATH with the rest of the path on your system**
 
 1. Clone this repository
+
 3. In PyCharm, do the following:
+
    1. Go to File -> Settings -> Language & Frameworks -> Django
    2. Check the "Enable Django Support"
    3. Enter this for the project root: *PATH*\Fumble\Fumble_project
    4. The other fields should detect automatically, if not:
+   
       1. Settings: *PATH*\Fumble\Fumble_project\Fumble_project\settings.py 
       2. Manage Script: *PATH*\Fumble\Fumble_project\manage.py
       
