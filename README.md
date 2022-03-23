@@ -32,7 +32,9 @@ Does your team have the skills and coordination to climb to the top?
 8. For the Python interpreter, it should be selected by default, if not:
    1. Select the interpreter you made earlier
 
-9. In the terminal, type the following in: `.\venv\Scripts\activate` to enable venv.
+### Enable Virtual Environment
+
+In the terminal, type the following in: `.\venv\Scripts\activate` to enable venv.
 
 ### Running the app
 
