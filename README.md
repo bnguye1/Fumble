@@ -47,6 +47,3 @@ You should be able to hit run in the top right, and a terminal should open showi
 `http://127.0.0.1:PORT/` should appear in the terminal. Ctrl+Click it and see if you are able to see the site.
 
 **Note: You will see a "Page not found" upon opening the link, but you should be able to visit the different pages shown on the page.**
-
-      
-   
