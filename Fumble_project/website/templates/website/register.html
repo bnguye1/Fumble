@@ -3,12 +3,17 @@
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
+
+    {% load static %}
+    <link rel="stylesheet" type="text/css" href="{% static 'website/register.css' %}">
 </head>
 <body>
-    <label for="username">Username:</label>
-    <input type="text" id="username" name="username"><br>
-    <label for="password">Password:</label>
-    <input type="text" id="password" name="password"><br>
-    <button type="button">Create Account</button>
+    <div class="box">
+        <label for="username">Username:</label>
+        <input type="text" id="username" name="username"><br>
+        <label for="password">Password:</label>
+        <input type="text" id="password" name="password"><br>
+        <button type="button">Create Account</button>
+    </div>
 </body>
 </html>
