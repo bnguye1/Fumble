@@ -1,10 +1,13 @@
-.gradient-custom-2 {
-  background: linear-gradient(to right, #ee7724, #d8363a, #dd3675, #b44593);
+* {
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
 }
 
-@media (min-width: 769px) {
-  .gradient-custom-2 {
-    border-top-left-radius: .3rem;
-    border-bottom-left-radius: .3rem;
-  }
+body {
+    background: rgb(219, 226, 226);
+}
+.row {
+    background: white;
+    border-radius: 10px;
 }
