@@ -1,13 +1,11 @@
-* {
-    padding: 0;
-    margin: 0;
-    box-sizing: border-box;
-}
-
-body {
-    background: rgb(219, 226, 226);
-}
 .row {
     background: white;
     border-radius: 10px;
+}
+
+.loginBtn {
+    background-image: linear-gradient(to bottom right, #5401D6, #7214FF);
+    font-family: "Inter", sans-serif;
+    font-weight: bold;
+    cursor: pointer;
 }
