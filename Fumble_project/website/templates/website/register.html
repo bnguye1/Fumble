@@ -24,14 +24,24 @@
             margin: 0;
             box-sizing: border-box;
         }
-        body {
-            background: rgb(219, 226, 226);
+        .background {
+            top: 0;
+            z-index: -1;
+            position: fixed;
+            width: 100%;
+            filter: blur(6px);
+        }
+        .container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
         }
         .row {
             background: #1B1B1B;
             border-radius: 30px;
         }
-        img {
+        .logo {
             border-top-left-radius: 30px;
             border-bottom-left-radius: 30px;
         }
@@ -53,31 +63,36 @@
             border-radius: 20px
         }
     </style>
+
 </head>
 <body>
+<img src="{% static '/website/images/mapsImage.png' %}" alt="maps" class="background">
 <div class="Form my-4 mx-5">
     <div class="container">
         <div class="row g-0">
-            <div class="col-lg-5">
-                <img src="{% static 'website/images/sponge.png' %}" alt="Spongebob Writing" class="img-fluid">
+            <div class="col-lg-6">
+                <img src="{% static 'website/images/sponge.png' %}" alt="Spongebob Writing" class="img-fluid logo">
             </div>
-            <div class="col-lg-4 px-4">
-                <div class="Form my-5">
+            <div class="col-lg-6 px-5">
+                <div class="Form">
                     <div class="form-row">
                         <label class="w-100">
                             <input type="text" placeholder="Username" class="form-control my-2 inputBox">
                         </label>
                     </div>
+
                     <div class="form-row">
                         <label class="w-100">
                             <input type="email" placeholder="E-mail Address" class="form-control my-2 inputBox">
                         </label>
                     </div>
+
                     <div class="form-row">
                         <label class="w-100">
                             <input type="password" placeholder="Password" class="form-control my-2 inputBox">
                         </label>
                     </div>
+
                     <div class="d-flex justify-content-center">
                         <div class="form-check">
                           <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault" style="background-color:#403F43">
@@ -86,13 +101,13 @@
                           </label>
                         </div>
                     </div>
+
                     <button type="button" class="register font-weight-bold my-4">Register</button>
                 </div>
             </div>
         </div>
     </div>
 </div>
-
 <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
 <script src="https://code.jquery.com/jquery-1.12.4.min.js"
         integrity="sha384-nvAa0+6Qg9clwYCGGPpDQLVpLNn0fRaROjHqs13t4Ggj3Ez50XnGQqc/r8MhnRDZ"
