@@ -8,3 +8,6 @@ def about(request):
 
 def login(request):
     return render(request, 'website/login.html')
+
+def register(request):
+    return render(request, 'website/register.html')
