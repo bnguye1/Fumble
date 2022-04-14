@@ -1,0 +1,122 @@
+<!doctype html>
+<html lang="en">
+<head>
+
+    <!-- TODO: Fix infinite redirect between login and register pages :) -->
+    {% load static %}
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+    <title>Fumble Register</title>
+
+    <!-- Bootstrap -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+    <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+    <![endif]-->
+
+    <style>
+        * {
+            padding: 0;
+            margin: 0;
+            box-sizing: border-box;
+        }
+        .background {
+            top: 0;
+            z-index: -1;
+            position: fixed;
+            width: 100%;
+            filter: blur(6px);
+        }
+        .container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+        .row {
+            background: #1B1B1B;
+            border-radius: 30px;
+        }
+        .logo {
+            border-top-left-radius: 30px;
+            border-bottom-left-radius: 30px;
+        }
+        .inputBox {
+            border: none;
+            outline: none;
+            height: 50px;
+            width: 100%;
+            background: #403F43;
+            border-radius: 20px
+        }
+        .register {
+            border: none;
+            outline: none;
+            height: 50px;
+            width: 100%;
+            background-image: linear-gradient(to bottom right, #5401D6, #7214FF);
+            color: white;
+            border-radius: 20px
+        }
+    </style>
+
+</head>
+<body>
+<img src="{% static '/website/images/mapsImage.png' %}" alt="maps" class="background">
+<div class="Form my-4 mx-5">
+    <div class="container">
+        <div class="row g-0">
+            <div class="col-lg-6">
+                <img src="{% static 'website/images/sponge.png' %}" alt="Spongebob Writing" class="img-fluid logo">
+            </div>
+            <div class="col-lg-6 px-5">
+                <div class="Form">
+                    <div class="form-row">
+                        <label class="w-100">
+                            <input type="text" placeholder="Username" class="form-control my-2 inputBox">
+                        </label>
+                    </div>
+
+                    <div class="form-row">
+                        <label class="w-100">
+                            <input type="email" placeholder="E-mail Address" class="form-control my-2 inputBox">
+                        </label>
+                    </div>
+
+                    <div class="form-row">
+                        <label class="w-100">
+                            <input type="password" placeholder="Password" class="form-control my-2 inputBox">
+                        </label>
+                    </div>
+
+                    <div class="d-flex justify-content-center">
+                        <div class="form-check">
+                          <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault" style="background-color:#403F43">
+                          <label class="form-check-label" for="flexCheckDefault" style="color:#C9C6D6">
+                            I agree with the Terms of Service
+                          </label>
+                        </div>
+                    </div>
+
+                    <a href="http://127.0.0.1:8000/login"><button type="button" class="register font-weight-bold my-4">Register</button></a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+<script src="https://code.jquery.com/jquery-1.12.4.min.js"
+        integrity="sha384-nvAa0+6Qg9clwYCGGPpDQLVpLNn0fRaROjHqs13t4Ggj3Ez50XnGQqc/r8MhnRDZ"
+        crossorigin="anonymous"></script>
+<!-- Include all compiled plugins (below), or include individual files as needed -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@3.4.1/dist/js/bootstrap.min.js"
+        integrity="sha384-aJ21OjlMXNL5UyIl/XNwTMqvzeRMZH2w8c5cRVpzpU8Y5bApTppSuUkhZXN0VxHd"
+        crossorigin="anonymous"></script>
+</body>
+</html>
