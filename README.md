@@ -9,18 +9,26 @@ They will be able to challenge other teams around the area and fight their way t
 Does your team have the skills and coordination to climb to the top?
 
 ### Setup
-Download the release build and open the `Fumble` folder in your preferred code editor.
+Download the release build and open the `Fumble-0.1.0` folder in your preferred code editor.
 
-### Enable Virtual Environment
+### Virtual Environment
+In a terminal, type the following commands to create and enable the virtual environment.
+```
+python -m venv venv
+.\venv\Scripts\activate
+```
 
-In the terminal, type the following in: `.\venv\Scripts\activate` to enable venv.
+### Install Project Dependencies
+In a terminal, type the following commands:
+```
+cd Fumble_project
+pip install -r requirements.txt
+```
 
 ### Running the app
 
-
-In the terminal, run the following commands: 
+In a terminal, run the following commands: 
 ```
-cd Fumble_project
 python manage.py runserver
 ```
 
