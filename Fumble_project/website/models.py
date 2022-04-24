@@ -14,3 +14,4 @@ class Team(models.Model):
     teamHouseX = models.FloatField()
     teamHouseY = models.FloatField()
     sport = models.TextField()
+
