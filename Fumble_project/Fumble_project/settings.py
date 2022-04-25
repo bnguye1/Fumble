@@ -78,9 +78,9 @@ WSGI_APPLICATION = 'Fumble_project.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'fumbleDB',
-        'USER': 'fumble',
-        'PASSWORD': 'fumble',
+        'NAME': 'postgres',
+        'USER': 'postgres',
+        'PASSWORD': 'password',
         'HOST': '127.0.0.1',
         'PORT': '5432',
     }

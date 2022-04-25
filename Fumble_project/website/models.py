@@ -9,7 +9,7 @@ class User(models.Model):
 
 
 class Team(models.Model):
-    captain = models.ForeignKey(User)
+    #captain = models.ForeignKey(User)
     mmr = models.IntegerField()
     teamHouseX = models.FloatField()
     teamHouseY = models.FloatField()
