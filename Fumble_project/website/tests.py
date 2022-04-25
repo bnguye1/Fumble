@@ -44,5 +44,17 @@ class RegistrationTest(TestCase):
 
         self.assertEquals(driver.current_url, "localhost:8000/login/")
 
+    def testIncorrectRegister(self):
+        driver = self.driver
+
+        elem = driver.find_element("registerButton")
+        elem.click()
+
+        driver.switch_to.alert.accept()
+
+        driver.implicitly_wait(10)
+
+        self.assertEquals(driver.current_url, "localhost:8000/register/")
+
     def tearDown(self):
         self.driver.quit()
