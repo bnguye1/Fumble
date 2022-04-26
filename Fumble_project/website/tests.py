@@ -20,3 +20,9 @@ class RegistrationTest(TestCase):
 
     def tearDown(self):
         self.driver.quit()
+
+
+class DatabaseTest(TestCase):
+    def simpleSelect(self):
+        pass
+
