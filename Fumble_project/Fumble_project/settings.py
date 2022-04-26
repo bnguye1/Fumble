@@ -75,6 +75,8 @@ WSGI_APPLICATION = 'Fumble_project.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/4.0/ref/settings/#databases
 
+# Postgres DB config
+"""
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
@@ -85,8 +87,15 @@ DATABASES = {
         'PORT': '5432',
     }
 }
+"""
 
-
+# SQLite3 DB config
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': BASE_DIR / 'fumbledb.sqlite3'
+    }
+}
 # Password validation
 # https://docs.djangoproject.com/en/4.0/ref/settings/#auth-password-validators
 
