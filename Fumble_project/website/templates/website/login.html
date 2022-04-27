@@ -75,26 +75,28 @@
                 </div>
                 <div class="col-lg-6 px-5">
                     <p class="py-5" style="color: #C9C6D6; text-align: center; font-weight: bold;">Who are you?</p>
-                    <div class="Form">
-                        <div class="form-row">
-                            <label class="w-100">
-                                <input type="email" placeholder="E-mail Address" id="email" class="form-control my-2 inputBox" style="font-weight: bold;" required>
-                            </label>
+                    <form method="post">
+                        {% csrf_token %}
+                        {{form.as_p}}
+                        <div class="Form">
+                            <div class="form-row">
+                                <label class="w-100">
+                                    <input type="email" placeholder="E-mail Address" name="email" id="email" class="form-control my-2 inputBox" style="font-weight: bold;" required>
+                                </label>
+                            </div>
+                            <div class="form-row">
+                                <label class="w-100">
+                                    <input type="password" placeholder="Password" name="password" id="password" class="form-control my-2 inputBox" style="font-weight: bold;" required>
+                                </label>
+                            </div>
+                            <div class="d flex justify-content-center">
+                                <input class="form-check-input" type="checkbox" id="rememberCheckBx" style="background-color: #403F43;">
+                                <label class="form-check-label" for="rememberCheckBx" style="color: #C9C6D6;">
+                                    Remember me
+                                </label>
+                            </div>
                         </div>
-                        <div class="form-row">
-                            <label class="w-100">
-                                <input type="password" placeholder="Password" id="password" class="form-control my-2 inputBox" style="font-weight: bold;" required>
-                            </label>
-                        </div>
-                        <div class="d flex justify-content-center">
-                            <input class="form-check-input" type="checkbox" id="rememberCheckBx" style="background-color: #403F43;">
-                            <label class="form-check-label" for="rememberCheckBx" style="color: #C9C6D6;">
-                                Remember me
-                            </label>
-                        </div>
-                    </div>
-                    {% csrf_token %}
-                    <form method="POST">
+
                         <button type="submit" id="login-btn" class="loginBtn my-4">Login</button>
                     </form>
 
@@ -105,9 +107,8 @@
         </div>
     </div>
 
-    <!-- Custom Javascript -->
     <script>
-
+        /*
         // Login Page Authentication
         const loginForm = document.getElementById("login-form")
         const loginButton = document.getElementById("login-btn")
@@ -120,6 +121,9 @@
             const password = document.getElementById("password").value;
 
             // Redirect user based on entered information
+            if (email.length > 0 && password.length > 0) {
+                login(email, password);
+            }
             if (email === "gg@gmail.com" && password === "password") {
                 alert("You have successfully logged in.")
                 location.assign("http://127.0.0.1:8000/home/")
@@ -136,7 +140,7 @@
                 }
             }
         })
-
+        */
     </script>
 </body>
 </html>

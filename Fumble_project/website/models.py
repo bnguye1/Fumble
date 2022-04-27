@@ -12,7 +12,6 @@ class User(models.Model):
     password = models.TextField()
     email = models.TextField()
 
-
 class Team(models.Model):
     captain = models.ForeignKey(User, on_delete=models.CASCADE)
     mmr = models.IntegerField()

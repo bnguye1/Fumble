@@ -1,7 +1,10 @@
 from django.http import HttpResponse
 from django.shortcuts import render
+from .models import User
+from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
 from django.shortcuts import redirect
+from django.conf import settings
 import logging
 
 logger = logging.getLogger()
@@ -16,17 +19,17 @@ def login(request):
     if request.method == "POST":
         email = request.POST["email"]
         password = request.POST["password"]
-
         user = authenticate(request, email=email, password=password)
 
-        # User has correct login information
         if user is not None:
             login(request, user)
-            return render(request, "http://localhost:8000/home")
+            message.info(request, 'You have successfully logged in!')
+            return redirect("home")
 
-        return HttpResponse(email + " " + password)
-    else:
-        return render(request, 'website/login.html')
+        else:
+            messages.info(request, 'Invalid E-mail Address or Password.')
+            return render(request, "website/login.html")
+
 
 def register(request):
     if request.method == 'POST':
@@ -35,7 +38,12 @@ def register(request):
         password = request.POST["password"]
         email = request.POST["email"]
 
+        # These coordinates are from a random McDonald's somewhere in the world
+        user = User(isCapt=False, locationX=37.033289, locationY=-95.619456, teamName="", password=password, email=email)
+        user.save()
+
         return HttpResponse(username + " " + password + " " + email)
+
     else:
         return render(request, 'website/register.html')
 
