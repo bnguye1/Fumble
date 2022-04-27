@@ -78,12 +78,12 @@
                     <div class="Form">
                         <div class="form-row">
                             <label class="w-100">
-                                <input type="email" placeholder="E-mail Address" id="email-field" class="form-control my-2 inputBox" style="font-weight: bold;" required>
+                                <input type="email" placeholder="E-mail Address" id="email" class="form-control my-2 inputBox" style="font-weight: bold;" required>
                             </label>
                         </div>
                         <div class="form-row">
                             <label class="w-100">
-                                <input type="password" placeholder="Password" id="password-field" class="form-control my-2 inputBox" style="font-weight: bold;" required>
+                                <input type="password" placeholder="Password" id="password" class="form-control my-2 inputBox" style="font-weight: bold;" required>
                             </label>
                         </div>
                         <div class="d flex justify-content-center">
@@ -93,7 +93,11 @@
                             </label>
                         </div>
                     </div>
-                    <a href="http://127.0.0.1:8000/home/"><button type="submit" id="login-btn" class="loginBtn my-4">Login</button></a>
+                    {% csrf_token %}
+                    <form method="POST">
+                        <button type="submit" id="login-btn" class="loginBtn my-4">Login</button>
+                    </form>
+
                     <p style="text-align: center;"><a href="#" style="color: #7014FF; text-decoration: none;">Forgot password?</a></p>
                     <p style="color: #C9C6D6; text-align: center;">Are you new? <a href="http://127.0.0.1:8000/register/" class="link">Register here.</a></p>
                 </div>
@@ -112,8 +116,8 @@
             e.preventDefault()
 
             // Get email and password values
-            const email = document.getElementById("email-field").value;
-            const password = document.getElementById("password-field").value;
+            const email = document.getElementById("email").value;
+            const password = document.getElementById("password").value;
 
             // Redirect user based on entered information
             if (email === "gg@gmail.com" && password === "password") {
@@ -123,13 +127,12 @@
 
             else {
                 if (email.length > 0 && password.length > 0) {
-
                     alert("Incorrect email and/or password, please try again.")
-                    location.reload()
                 }
 
                 else {
-                    alert("An email and password must be entered...")
+                    alert("An email and password must be entered.")
+                    e.preventDefault()
                 }
             }
         })
