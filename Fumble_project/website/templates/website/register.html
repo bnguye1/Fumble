@@ -104,7 +104,7 @@
                         </div>
                     </div>
 
-                    <a href="http://127.0.0.1:8000/login"><button type="button" class="register font-weight-bold my-4" id="registerButton">Register</button></a>
+                    <button type="button" class="register font-weight-bold my-4" id="registerButton">Register</button>
                 </div>
             </div>
         </div>
@@ -120,6 +120,7 @@
         crossorigin="anonymous"></script>
 
     <script>
+        //Regex to find a valid email. Taken from: https://stackoverflow.com/questions/46155/whats-the-best-way-to-validate-an-email-address-in-javascript
         const validateEmail = (email) => {
           return String(email)
             .toLowerCase()
@@ -148,7 +149,7 @@
             else {
                 if (email.length > 0 && username.length > 0 && password.length > 0) {
                     alert("You have successfully registered.")
-                    location.assign("http://127.0.0.1:8000/login/")
+                    location.assign("http://localhost:" + location.port + "/login/")
                 }
                 else {
                     alert("A username and password must be entered.")
