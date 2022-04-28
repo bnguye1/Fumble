@@ -1,10 +1,11 @@
-from django.http import HttpResponse
+from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render
-from .models import User
 from django.contrib import messages
-from django.contrib.auth import authenticate, logout, login
+from django.contrib.auth import authenticate, login
+from django.contrib.auth.forms import AuthenticationForm
 from django.shortcuts import redirect
 from django.conf import settings
+from .models import User
 import logging
 
 
@@ -17,26 +18,27 @@ def about(request):
     return render(request, 'website/about.html')
 
 def login(request):
+
     if request.method == "POST":
-        email = request.POST["email"]
-        password = request.POST["password"]
-
         try:
-            user = authenticate(request, email=email, password=password)
-            if user is not None:
-                login(request, user)
-                message.info(request, 'You have successfully logged in!')
-                return render(request, "website/home.html")
+            email = request.POST['email-field']
+            password = request.POST['password-field']
+            user = User.objects.get(email__exact=email)
 
+            # A "completely" safe approach
+            if user:
+                if user.password == password:
+                    messages.info(request, "You have logged in successfully!")
+                    return HttpResponseRedirect('/home')
             else:
-                messages.info(request, 'Invalid E-mail Address or Password.')
-                return HttpResponse(password + " " + email)
+                messages.error(request, "Incorrect email address and/or password.")
+                return HttpResponseRedirect('/login')
 
-        except Exception as ex:
-            return redirect('/')
-    else:
-        return render(request, "website/login.html")
+        except Exception:
+            messages.error(request, "Incorrect email address and/or password.")
+            return HttpResponseRedirect('/login')
 
+    return render(request, 'website/login.html')
 
 def register(request):
     if request.method == 'POST':
