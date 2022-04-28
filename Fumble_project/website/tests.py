@@ -11,11 +11,13 @@ from selenium.webdriver.firefox.webdriver import WebDriver
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.ui import WebDriverWait
+from .models import User
+
 
 class RegistrationTest(StaticLiveServerTestCase):
     def setUp(self):
         super().setUp()
-        self.driver = WebDriver()
+        self.driver = WebDriver(executable_path="testing/geckodriver.exe")
         self.driver.implicitly_wait(10)
 
     def testDoInputsExist(self):
@@ -24,9 +26,9 @@ class RegistrationTest(StaticLiveServerTestCase):
         # URL
         driver.get('%s%s' % (self.live_server_url, '/register/'))
 
-        self.assertNotEqual(driver.find_elements(By.ID, 'usernameBox'), 0)
-        self.assertNotEqual(driver.find_elements(By.ID, 'emailBox'), 0)
-        self.assertNotEqual(driver.find_elements(By.ID, 'passwordBox'), 0)
+        self.assertNotEqual(driver.find_elements(By.ID, 'username'), 0)
+        self.assertNotEqual(driver.find_elements(By.ID, 'email'), 0)
+        self.assertNotEqual(driver.find_elements(By.ID, 'password'), 0)
         self.assertNotEqual(driver.find_elements(By.ID, 'tosCheck'), 0)
         self.assertNotEqual(driver.find_elements(By.ID, 'registerButton'), 0)
 
@@ -35,14 +37,14 @@ class RegistrationTest(StaticLiveServerTestCase):
 
         driver.get('%s%s' % (self.live_server_url, '/register/'))
 
-        elem = driver.find_element(By.ID, "usernameBox")
-        elem.send_keys('username' + Keys.RETURN)
+        elem = driver.find_element(By.ID, "username")
+        elem.send_keys('username')
 
-        elem = driver.find_element(By.ID, "emailBox")
-        elem.send_keys('test@gmail.com' + Keys.RETURN)
+        elem = driver.find_element(By.ID, "email")
+        elem.send_keys('test@gmail.com')
 
-        elem = driver.find_element(By.ID, "passwordBox")
-        elem.send_keys('password' + Keys.RETURN)
+        elem = driver.find_element(By.ID, "password")
+        elem.send_keys('password')
 
         elem = driver.find_element(By.ID, "tosCheck")
         elem.click()
@@ -58,6 +60,9 @@ class RegistrationTest(StaticLiveServerTestCase):
 
         self.assertEquals(driver.current_url, self.live_server_url + '/login/')
 
+        self.assertIs(User.objects.filter(email="test@gmail.com").exists(), True)
+
+
     def testIncorrectRegister(self):
         driver = self.driver
 
@@ -66,7 +71,9 @@ class RegistrationTest(StaticLiveServerTestCase):
         elem = driver.find_element(By.ID, "registerButton")
         elem.click()
 
-        self.assertEquals(driver.switch_to.alert.text, 'Email is not a valid email. Please try again.')
+        driver.switch_to.alert.accept()
+
+        self.assertEquals(driver.current_url, self.live_server_url + '/register/')
 
     def tearDown(self):
         self.driver.quit()
@@ -96,4 +103,3 @@ class LoginTestCase(TestCase):
             login = page.find_element_by_id("login-btn")
             login.click()
             self.assertIsNotNone(elem)
-

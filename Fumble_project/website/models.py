@@ -5,15 +5,16 @@ from django.db import models
 
 
 class User(models.Model):
-    isCapt = models.BooleanField()
-    locationX = models.FloatField()
-    locationY = models.FloatField()
-    teamName = models.TextField()
-    password = models.TextField()
-    email = models.TextField()
+    isCapt = models.BooleanField(default=False)
+    locationX = models.FloatField(default=0)
+    locationY = models.FloatField(default=0)
+    teamName = models.TextField(default="")
+    password = models.TextField(default="")
+    email = models.TextField(default="")
+
 
 class Team(models.Model):
-    captain = models.ForeignKey(User, on_delete=models.CASCADE)
+    captain = models.ForeignKey(User, on_delete=models.CASCADE, default=0)
     mmr = models.IntegerField()
     teamHouseX = models.FloatField()
     teamHouseY = models.FloatField()

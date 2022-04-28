@@ -1,5 +1,7 @@
-from django.http import HttpResponse
+from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render
+from django.urls import reverse
+
 from .models import User
 from django.contrib import messages
 from django.contrib.auth import authenticate, logout, login
@@ -25,7 +27,7 @@ def login(request):
             user = authenticate(request, email=email, password=password)
             if user is not None:
                 login(request, user)
-                message.info(request, 'You have successfully logged in!')
+                messages.info(request, 'You have successfully logged in!')
                 return render(request, "website/home.html")
 
             else:
@@ -41,7 +43,6 @@ def login(request):
 def register(request):
     if request.method == 'POST':
         # TODO - Implement adding users to database when register
-        username = request.POST["username"]
         password = request.POST["password"]
         email = request.POST["email"]
 
@@ -49,10 +50,9 @@ def register(request):
         user = User(isCapt=False, locationX=37.033289, locationY=-95.619456, teamName="", password=password, email=email)
         user.save()
 
-        return HttpResponse(username + " " + password + " " + email)
+        return HttpResponseRedirect("/login/")
 
-    else:
-        return render(request, 'website/register.html')
+    return render(request, 'website/register.html')
 
 def navbar(request):
     return render(request, 'website/navbar.html')
