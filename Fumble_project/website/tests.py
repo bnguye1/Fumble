@@ -1,18 +1,17 @@
 from django.test import TestCase
 from django.test import override_settings, TestCase
 from contextlib import contextmanager
-from django.urls import reverse
+from django.urls import reverse, resolve
 from django.contrib.staticfiles.testing import StaticLiveServerTestCase
 from selenium import webdriver
-from selenium.common.exceptions import NoSuchElementException
-from selenium.webdriver.chrome.options import Options
-from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.common.by import By
 from selenium.webdriver.firefox.webdriver import WebDriver
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.ui import WebDriverWait
+from django.test import SimpleTestCase
 from .models import User
 from .models import Team
+from .views import navbar
 
 
 class RegistrationTest(StaticLiveServerTestCase):
@@ -62,7 +61,6 @@ class RegistrationTest(StaticLiveServerTestCase):
         self.assertEquals(driver.current_url, self.live_server_url + '/login/')
 
         self.assertIs(User.objects.filter(email="test@gmail.com").exists(), True)
-
 
     def testIncorrectRegister(self):
         driver = self.driver
@@ -114,7 +112,7 @@ class DatabaseTest(TestCase):
         except Exception:
             print("could not retrieve player with password \"slasher\"")
 
-# Create your tests here.
+
 class LoginTestCase(TestCase):
 
     @contextmanager
@@ -139,3 +137,30 @@ class LoginTestCase(TestCase):
             login = page.find_element_by_id("login-btn")
             login.click()
             self.assertIsNotNone(elem)
+
+class TestPages(SimpleTestCase):
+    def testNavBar(self):
+        # Test whether the URL routes correctly to the navigation bar.
+        url = reverse('navigation-bar')
+        self.assertEquals(resolve(url).func, navbar)
+
+        # Use Selenium to test whether the proper elements are present on the page
+        driver = webdriver.Firefox()
+        driver.get("http://127.0.0.1:8000/navbar/")
+
+        # Locating the Navigation bar
+        potential_bar = driver.find_element(By.CLASS_NAME, "pages")
+
+        # Locating the logos
+        potential_astley = driver.find_element(By.CLASS_NAME, "astley")
+        potential_ben = driver.find_element(By.CLASS_NAME, "ben")
+
+    def testMap(self):
+        # Test whether the URL routes correctly to the map page.
+        url = reverse('website-map')
+        self.assertEquals(resolve(url).func, map)
+
+        # Use Selenium to ensure that the map element is present.
+        driver = webdriver.Firefox()
+        driver.get("http://127.0.0.1:8000/map/")
+        potential_map = driver.find_element(By.ID, "map")
