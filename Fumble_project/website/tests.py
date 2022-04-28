@@ -1,3 +1,6 @@
+from django.test import TestCase
+from django.test import override_settings, TestCase
+from contextlib import contextmanager
 from django.urls import reverse, resolve
 from django.contrib.staticfiles.testing import StaticLiveServerTestCase
 from selenium import webdriver
@@ -7,6 +10,7 @@ from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.ui import WebDriverWait
 from django.test import SimpleTestCase
 from .models import User
+from .models import Team
 from .views import navbar
 
 
@@ -73,6 +77,66 @@ class RegistrationTest(StaticLiveServerTestCase):
     def tearDown(self):
         self.driver.quit()
 
+# Testing database queries
+
+
+class DatabaseTest(TestCase):
+    def setUp(self):
+        User.objects.create(isCapt=False, locationX=20, locationY=40, teamName="Tigers",
+                            password="hashed",email="myemail@email")
+        User.objects.create(isCapt=True, locationX=20, locationY=40, teamName="Lions",
+                            password="hashing",email="myemail@gmail")
+        User.objects.create(isCapt=False, locationX=20, locationY=40, teamName="Bears",
+                            password="slasher",email="myemail@aol")
+
+    def testRetrieve(self):
+        try:
+            captain = User.objects.get(isCapt=True)
+        except Exception:
+            print("could not find a captain")
+
+        try:
+            aPlayer = User.objects.get(password="slasher")
+        except Exception:
+            print("could not find user with password \"slasher\"")
+
+        # did we get a captain?
+        try:
+            self.assertEqual(captain.isCapt, True)
+        except Exception:
+            print("could not retrieve a captain")
+
+        # did we retrieve this user's password?
+        try:
+            self.assertEqual(aPlayer.password, "slasher")
+        except Exception:
+            print("could not retrieve player with password \"slasher\"")
+
+
+class LoginTestCase(TestCase):
+
+    @contextmanager
+    def browser(self, view_name: str):
+        url = "{}{}".format('http://localhost:8000', reverse(view_name))
+        chrome_options = Options()
+        chrome_options.add_argument('--headless')
+        chrome_options.add_argument('--no-sandbox')
+        chrome_options.add_argument('--disable-dev-shm-usage')
+        browser = webdriver.Chrome(chrome_options=chrome_options)
+        browser.implicitly_wait(10)
+        browser.get(url)
+        yield browser
+        browser.quit()
+
+    def test_login(self):
+        with self.browser("website-login") as page:
+            elem = page.find_element_by_id('email-field')
+            elem.send_keys('gg@gmail.com' + Keys.RETURN)
+            elem = page.find_element_by_id("password-field")
+            elem.send_keys("password" + Keys.RETURN)
+            login = page.find_element_by_id("login-btn")
+            login.click()
+            self.assertIsNotNone(elem)
 
 class TestPages(SimpleTestCase):
     def testNavBar(self):
