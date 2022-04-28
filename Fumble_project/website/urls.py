@@ -9,4 +9,5 @@ urlpatterns = [
     path('navbar/', views.navbar, name='navigation-bar'),
     path('profile/', views.profile, name='website-profile'),
     path('map/', views.map, name='website-map'),
+
 ]
