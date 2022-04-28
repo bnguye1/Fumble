@@ -1,8 +1,6 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns="http://www.w3.org/1999/html">
 <head>
-
-    <!-- TODO: Fix infinite redirect between login and register pages :) -->
     {% load static %}
     <!-- Required meta tags -->
     <meta charset="UTF-8">
@@ -69,7 +67,7 @@
 </head>
 <body>
     <img src="{% static 'map.jpg' %}" alt="maps" class="background">
-    <div class="Form my-4 mx-5">
+    <div class="Form my-4 mx-5" id="login-form">
         <div class="container">
             <div class="row">
                 <div class="col-lg-6 g-0">
@@ -77,30 +75,72 @@
                 </div>
                 <div class="col-lg-6 px-5">
                     <p class="py-5" style="color: #C9C6D6; text-align: center; font-weight: bold;">Who are you?</p>
-                    <div class="Form">
-                        <div class="form-row">
-                            <label class="w-100">
-                                <input type="email" placeholder="E-mail Address" class="form-control my-2 inputBox" style="font-weight: bold;" required>
-                            </label>
+                    <form method="POST">
+                        {% csrf_token %}
+                        {{form.as_p}}
+                        <div class="Form">
+                            <div class="form-row">
+                                <label class="w-100">
+                                    <input type="email" placeholder="E-mail Address" name="email" id="email" class="form-control my-2 inputBox" style="font-weight: bold;" required>
+                                </label>
+                            </div>
+                            <div class="form-row">
+                                <label class="w-100">
+                                    <input type="password" placeholder="Password" name="password" id="password" class="form-control my-2 inputBox" style="font-weight: bold;" required>
+                                </label>
+                            </div>
+                            <div class="d flex justify-content-center">
+                                <input class="form-check-input" type="checkbox" id="rememberCheckBx" style="background-color: #403F43;">
+                                <label class="form-check-label" for="rememberCheckBx" style="color: #C9C6D6;">
+                                    Remember me
+                                </label>
+                            </div>
                         </div>
-                        <div class="form-row">
-                            <label class="w-100">
-                                <input type="password" placeholder="Password" class="form-control my-2 inputBox" style="font-weight: bold;" required>
-                            </label>
-                        </div>
-                        <div class="d flex justify-content-center">
-                            <input class="form-check-input" type="checkbox" id="rememberCheckBx" style="background-color: #403F43;">
-                            <label class="form-check-label" for="rememberCheckBx" style="color: #C9C6D6;">
-                                Remember me
-                            </label>
-                        </div>
-                    </div>
-                    <a href="http://127.0.0.1:8000/register"><button type="button" class="loginBtn my-4">Login</button></a>
+
+                        <button type="submit" id="login-btn" class="loginBtn my-4">Login</button>
+                    </form>
+
                     <p style="text-align: center;"><a href="#" style="color: #7014FF; text-decoration: none;">Forgot password?</a></p>
-                    <p style="color: #C9C6D6; text-align: center;">Are you new? <a href="http://127.0.0.1:8000/register" class="link">Register here.</a></p>
+                    <p style="color: #C9C6D6; text-align: center;">Are you new? <a href="http://127.0.0.1:8000/register/" class="link">Register here.</a></p>
                 </div>
             </div>
         </div>
     </div>
+
+    <script>
+        /*
+        // Login Page Authentication
+        const loginForm = document.getElementById("login-form")
+        const loginButton = document.getElementById("login-btn")
+
+        loginButton.addEventListener("click", (e) => {
+            e.preventDefault()
+
+            // Get email and password values
+            const email = document.getElementById("email").value;
+            const password = document.getElementById("password").value;
+
+            // Redirect user based on entered information
+            if (email.length > 0 && password.length > 0) {
+                login(email, password);
+            }
+            if (email === "gg@gmail.com" && password === "password") {
+                alert("You have successfully logged in.")
+                location.assign("http://127.0.0.1:8000/home/")
+            }
+
+            else {
+                if (email.length > 0 && password.length > 0) {
+                    alert("Incorrect email and/or password, please try again.")
+                }
+
+                else {
+                    alert("An email and password must be entered.")
+                    e.preventDefault()
+                }
+            }
+        })
+        */
+    </script>
 </body>
 </html>
