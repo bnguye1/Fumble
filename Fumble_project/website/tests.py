@@ -1,9 +1,12 @@
+from django.test import TestCase
 from django.contrib.staticfiles.testing import StaticLiveServerTestCase
 from selenium.webdriver.common.by import By
 from selenium.webdriver.firefox.webdriver import WebDriver
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.ui import WebDriverWait
+from .models import User
+from .models import Team
 
 
 class RegistrationTest(StaticLiveServerTestCase):
@@ -65,8 +68,37 @@ class RegistrationTest(StaticLiveServerTestCase):
     def tearDown(self):
         self.driver.quit()
 
+# Testing database queries
+
 
 class DatabaseTest(TestCase):
-    def simpleSelect(self):
-        pass
+    def setUp(self):
+        User.objects.create(isCapt=False, locationX=20, locationY=40, teamName="Tigers",
+                            password="hashed",email="myemail@email")
+        User.objects.create(isCapt=True, locationX=20, locationY=40, teamName="Lions",
+                            password="hashing",email="myemail@gmail")
+        User.objects.create(isCapt=False, locationX=20, locationY=40, teamName="Bears",
+                            password="slasher",email="myemail@aol")
 
+    def testRetrieve(self):
+        try:
+            captain = User.objects.get(isCapt=True)
+        except Exception:
+            print("could not find a captain")
+
+        try:
+            aPlayer = User.objects.get(password="slasher")
+        except Exception:
+            print("could not find user with password \"slasher\"")
+
+        # did we get a captain?
+        try:
+            self.assertEqual(captain.isCapt, True)
+        except Exception:
+            print("could not retrieve a captain")
+
+        # did we retrieve this user's password?
+        try:
+            self.assertEqual(aPlayer.password, "slasher")
+        except Exception:
+            print("could not retrieve player with password \"slasher\"")
