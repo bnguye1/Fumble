@@ -6,8 +6,7 @@ from django.db import models
 
 class User(models.Model):
     isCapt = models.BooleanField(default=False)
-    locationX = models.FloatField(default=0)
-    locationY = models.FloatField(default=0)
+    address = models.TextField(default="")
     teamName = models.TextField(default="")
     password = models.TextField(default="")
     email = models.TextField(default="")
@@ -16,6 +15,5 @@ class User(models.Model):
 class Team(models.Model):
     captain = models.ForeignKey(User, on_delete=models.CASCADE, default=0)
     mmr = models.IntegerField()
-    teamHouseX = models.FloatField()
-    teamHouseY = models.FloatField()
+    teamAddress = models.TextField(default="")
     sport = models.TextField()
