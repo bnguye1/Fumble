@@ -1,3 +1,41 @@
-<h1>
-This will be where we implement Google Maps so you can see your opponents!
-</h1>
+<!DOCTYPE HTML>
+
+<html>
+	<head>
+		<title> Map </title>
+
+		<script type = "module">
+		function makeMap(){
+				const defLocation = {lat: 39.2543, lng: -76.7100};
+				const map = new google.maps.Map(document.getElementById("map"), {
+				zoom: 15,
+				center: defLocation,
+				});
+				
+				const teamOneLoc = new google.maps.Marker({
+					position: defLocation,
+					map: map,
+				});
+			}
+			window.makeMap = makeMap;
+		</script>
+	</head>
+
+	<style>
+		#map {
+			height: 900px;
+			width: 100%;
+			background-color: grey;
+		}
+	</style>
+
+	<body>
+		<div id="map"></div>	
+		<script async
+		src="https://maps.googleapis.com/maps/api/js?key=INSERT API KEY HERE&callback=makeMap&v=weekly"
+		defer>
+
+		</script>	
+	</body>
+	
+</html>
