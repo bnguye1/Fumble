@@ -1,8 +1,6 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns="http://www.w3.org/1999/html">
 <head>
-
-    <!-- TODO: Fix infinite redirect between login and register pages :) -->
     {% load static %}
     <!-- Required meta tags -->
     <meta charset="UTF-8">
@@ -69,7 +67,7 @@
 </head>
 <body>
     <img src="{% static 'map.jpg' %}" alt="maps" class="background">
-    <div class="Form my-4 mx-5">
+    <div class="Form my-4 mx-5" id="login-form">
         <div class="container">
             <div class="row">
                 <div class="col-lg-6 g-0">
@@ -77,30 +75,48 @@
                 </div>
                 <div class="col-lg-6 px-5">
                     <p class="py-5" style="color: #C9C6D6; text-align: center; font-weight: bold;">Who are you?</p>
-                    <div class="Form">
-                        <div class="form-row">
-                            <label class="w-100">
-                                <input type="email" placeholder="E-mail Address" class="form-control my-2 inputBox" style="font-weight: bold;" required>
-                            </label>
+                    <form method="POST">
+                        {% csrf_token %}
+                        {{form.as_p}}
+                        <div class="Form">
+                            <div class="form-row">
+                                <label class="w-100">
+                                    <input type="email" placeholder="E-mail Address" name="email-field" class="form-control my-2 inputBox" style="font-weight: bold;" id="email-field" required>
+                                </label>
+                            </div>
+                            <div class="form-row">
+                                <label class="w-100">
+                                    <input type="password" placeholder="Password" name="password-field" class="form-control my-2 inputBox" style="font-weight: bold;" id="password-field" required>
+                                </label>
+                            </div>
+                            <div class="d flex justify-content-center">
+                                <input class="form-check-input" type="checkbox" id="rememberCheckBx" style="background-color: #403F43;">
+                                <label class="form-check-label" for="rememberCheckBx" style="color: #C9C6D6;">
+                                    Remember me
+                                </label>
+                            </div>
                         </div>
-                        <div class="form-row">
-                            <label class="w-100">
-                                <input type="password" placeholder="Password" class="form-control my-2 inputBox" style="font-weight: bold;" required>
-                            </label>
-                        </div>
-                        <div class="d flex justify-content-center">
-                            <input class="form-check-input" type="checkbox" id="rememberCheckBx" style="background-color: #403F43;">
-                            <label class="form-check-label" for="rememberCheckBx" style="color: #C9C6D6;">
-                                Remember me
-                            </label>
-                        </div>
-                    </div>
-                    <a href="http://127.0.0.1:8000/register"><button type="button" class="loginBtn my-4">Login</button></a>
+
+                        <button type="submit" id="login-btn" class="loginBtn my-4">Login</button>
+                    </form>
+
                     <p style="text-align: center;"><a href="#" style="color: #7014FF; text-decoration: none;">Forgot password?</a></p>
-                    <p style="color: #C9C6D6; text-align: center;">Are you new? <a href="http://127.0.0.1:8000/register" class="link">Register here.</a></p>
+                    <p style="color: #C9C6D6; text-align: center;">Are you new? <a href="http://127.0.0.1:8000/register/" class="link">Register here.</a></p>
+
+                    {% if messages %}
+                        {% for message in messages %}
+                            {% if message.level == DEFAULT_MESSAGE_LEVELS.ERROR %}
+                                <strong style="color: indianred;">{{ message }}</strong>
+                            {% endif %}
+                        {% endfor %}
+                    {% endif %}
                 </div>
             </div>
         </div>
     </div>
+
+    <script>
+
+    </script>
 </body>
 </html>
