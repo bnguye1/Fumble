@@ -10,6 +10,8 @@ class User(models.Model):
     teamName = models.TextField(default="")
     password = models.TextField(default="")
     email = models.TextField(default="")
+    is_active = models.BooleanField(default=True)
+    last_login = models.TextField(default="")
 
 
 class Team(models.Model):
