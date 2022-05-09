@@ -26,6 +26,10 @@
             margin: 0;
             box-sizing: border-box;
         }
+        .spongebob {
+            width: auto;
+            height: 400px
+        }
         .background {
             top: 0;
             z-index: -1;
@@ -74,7 +78,7 @@
     <div class="container">
         <div class="row g-0">
             <div class="col-lg-6">
-                <img src="{% static 'website/images/sponge.png' %}" alt="Spongebob Writing" class="img-fluid logo">
+                <img src="{% static 'website/images/sponge.png' %}" alt="Spongebob Writing" class="img-fluid logo spongebob">
             </div>
             <div class="col-lg-6 px-5">
                 <form id="register-form" class="register-form" action="/register/" method="post">
@@ -94,6 +98,12 @@
                     <div class="form-row">
                         <label class="w-100">
                             <input type="password" placeholder="Password" name="password" class="form-control my-2 inputBox" id="password">
+                        </label>
+                    </div>
+
+                    <div class="form-row">
+                        <label class="w-100">
+                            <input type="text" placeholder="Address" name="address" class="form-control my-2 inputBox" id="address">
                         </label>
                     </div>
 
