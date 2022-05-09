@@ -12,14 +12,25 @@ logger = logging.getLogger()
 
 
 def home(request):
-    if request.session.has_key('email'):
-        email = request.session['email']
-        return render(request, 'website/home.html', {'email': email})
-    else:
-        return HttpResponseRedirect('/login')
+    if "session" in request.session:
+        logged_in = request.session['session']
+
+        if logged_in == 'active':
+            param = {'session': logged_in}
+            return render(request, 'website/home.html', param)
+
+    return render(request, 'website/login.html', {})
+
 
 def about(request):
-    return render(request, 'website/about.html')
+    if "session" in request.session:
+        logged_in = request.session['session']
+
+        if logged_in == 'active':
+            param = {'session': logged_in}
+            return render(request, 'website/about.html', param)
+
+    return render(request, 'website/about.html', {})
 
 
 def login_view(request):
@@ -30,20 +41,30 @@ def login_view(request):
 
         if user and user.password == password:
             login(request, user)
-            return render(request, 'website/navbar.html', {'email': user.email})
+            param = {'session': 'active'}
+            return render(request, 'website/home.html', param)
+
         else:
             messages.error(request, "Incorrect email address and/or password.")
             return HttpResponseRedirect('/login')
 
-    return render(request, 'website/login.html')
+    return render(request, 'website/login.html', {})
+
 
 def logout(request):
-    try:
-        del request.session['email']
-    except Exception:
-        pass
+    if "session" in request.session:
+        try:
+            logged_in = request.session['session']
+
+            if logged_in == 'active':
+                del request.session['session']
+                return HttpResponseRedirect('/login')
+
+        except Exception:
+            pass
 
     return HttpResponseRedirect('/login')
+
 
 def register(request):
     if request.method == 'POST':
@@ -61,13 +82,24 @@ def register(request):
         return render(request, 'website/register.html')
 
 
-def navbar(request):
-    return render(request, 'website/navbar.html')
-
-
 def profile(request):
-    return render(request, 'website/profile.html')
+    if "session" in request.session:
+        logged_in = request.session['session']
+
+        if logged_in == 'active':
+            param = {'session': logged_in}
+            return render(request, 'website/profile.html', param)
+
+    else:
+        return render(request, 'website/login.html', {})
 
 
 def map(request):
-    return render(request, 'website/map.html')
+    if "session" in request.session:
+        logged_in = request.session['session']
+
+        if logged_in == 'active':
+            param = {'session': logged_in}
+            return render(request, 'website/map.html', param)
+
+    return render(request, 'website/login.html')
