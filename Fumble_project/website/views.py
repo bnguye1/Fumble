@@ -12,25 +12,23 @@ logger = logging.getLogger()
 
 
 def home(request):
-    if "session" in request.session:
-        logged_in = request.session['session']
+    if "email" in request.session:
+        email = request.session['email']
+        param = {'email': logged_in}
+        return render(request, 'website/home.html', param)
 
-        if logged_in == 'active':
-            param = {'session': logged_in}
-            return render(request, 'website/home.html', param)
-
-    return render(request, 'website/login.html', {})
+    else:
+        return render(request, 'website/login.html', {})
 
 
 def about(request):
-    if "session" in request.session:
-        logged_in = request.session['session']
+    if "email" in request.session:
+        email = request.session['email']
+        param = {'email': logged_in}
+        return render(request, 'website/about.html', param)
 
-        if logged_in == 'active':
-            param = {'session': logged_in}
-            return render(request, 'website/about.html', param)
-
-    return render(request, 'website/about.html', {})
+    else:
+        return render(request, 'website/about.html', {})
 
 
 def login_view(request):
@@ -41,8 +39,7 @@ def login_view(request):
 
         if user and user.password == password:
             login(request, user)
-            param = {'session': 'active'}
-            return render(request, 'website/home.html', param)
+            return render(request, 'website/home.html', {'email': email})
 
         else:
             messages.error(request, "Incorrect email address and/or password.")
@@ -52,13 +49,10 @@ def login_view(request):
 
 
 def logout(request):
-    if "session" in request.session:
+    if "email" in request.session:
         try:
-            logged_in = request.session['session']
-
-            if logged_in == 'active':
-                del request.session['session']
-                return HttpResponseRedirect('/login')
+            del request.session['session']
+            return HttpResponseRedirect('/login')
 
         except Exception:
             pass
@@ -83,23 +77,20 @@ def register(request):
 
 
 def profile(request):
-    if "session" in request.session:
-        logged_in = request.session['session']
-
-        if logged_in == 'active':
-            param = {'session': logged_in}
-            return render(request, 'website/profile.html', param)
+    if "email" in request.session:
+        email = request.session['email']
+        param = {'email': email}
+        return render(request, 'website/profile.html', param)
 
     else:
         return render(request, 'website/login.html', {})
 
 
 def map(request):
-    if "session" in request.session:
-        logged_in = request.session['session']
+    if "email" in request.session:
+        email = request.session['email']
+        param = {'email': email}
+        return render(request, 'website/map.html', param)
 
-        if logged_in == 'active':
-            param = {'session': logged_in}
-            return render(request, 'website/map.html', param)
-
-    return render(request, 'website/login.html')
+    else:
+        return render(request, 'website/login.html', {})
