@@ -12,23 +12,12 @@ logger = logging.getLogger()
 
 
 def home(request):
-    if "email" in request.session:
-        email = request.session['email']
-        param = {'email': logged_in}
-        return render(request, 'website/home.html', param)
+    return render(request, 'website/home.html')
 
-    else:
-        return render(request, 'website/login.html', {})
 
 
 def about(request):
-    if "email" in request.session:
-        email = request.session['email']
-        param = {'email': logged_in}
-        return render(request, 'website/about.html', param)
-
-    else:
-        return render(request, 'website/about.html', {})
+    return render(request, 'website/about.html')
 
 
 def login_view(request):
@@ -38,20 +27,20 @@ def login_view(request):
         user = User.objects.get(email__exact=email)
 
         if user and user.password == password:
-            login(request, user)
-            return render(request, 'website/home.html', {'email': email})
+            request.session['member_id'] = user.id
+            return HttpResponseRedirect('/home')
 
         else:
             messages.error(request, "Incorrect email address and/or password.")
             return HttpResponseRedirect('/login')
 
-    return render(request, 'website/login.html', {})
+    return render(request, 'website/login.html')
 
 
 def logout(request):
     if "email" in request.session:
         try:
-            del request.session['session']
+            del request.session['sessionid']
             return HttpResponseRedirect('/login')
 
         except Exception:
@@ -77,20 +66,11 @@ def register(request):
 
 
 def profile(request):
-    if "email" in request.session:
-        email = request.session['email']
-        param = {'email': email}
-        return render(request, 'website/profile.html', param)
+    # Allow user to view their profile
 
-    else:
-        return render(request, 'website/login.html', {})
+    return render(request, 'website/profile.html')
 
 
 def map(request):
-    if "email" in request.session:
-        email = request.session['email']
-        param = {'email': email}
-        return render(request, 'website/map.html', param)
+    return render(request, 'website/map.html')
 
-    else:
-        return render(request, 'website/login.html', {})

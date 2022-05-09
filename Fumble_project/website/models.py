@@ -14,8 +14,19 @@ class User(models.Model):
     last_login = models.TextField(default="")
 
 
+# Currently WIP
+"""
+class UserProfile(models.Model):
+    template_name = '/profile.html'
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    url = models.URLField("", blank=True)
+"""
+
+
 class Team(models.Model):
     captain = models.ForeignKey(User, on_delete=models.CASCADE, default=0)
     mmr = models.IntegerField()
     teamAddress = models.TextField(default="")
     sport = models.TextField()
+
+
