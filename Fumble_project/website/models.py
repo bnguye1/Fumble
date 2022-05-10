@@ -17,11 +17,11 @@ class User(models.Model):
 # Currently WIP
 """
 class UserProfile(models.Model):
-    template_name = '/profile.html'
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
-    url = models.URLField("", blank=True)
+    user = models.OneToOneField(User)
+    team_name = models.OneToOneField(User.teamName)
+    last_login = models.OneToOneField(User.last_login)
+    address = models.OneToOneField(User.address)
 """
-
 
 class Team(models.Model):
     captain = models.ForeignKey(User, on_delete=models.CASCADE, default=0)

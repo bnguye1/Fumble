@@ -108,6 +108,10 @@
                             {% if message.level == DEFAULT_MESSAGE_LEVELS.ERROR %}
                                 <strong style="color: indianred;">{{ message }}</strong>
                             {% endif %}
+
+                            {% if message.level == DEFAULT_MESSAGE_LEVELS.INFO %}
+                                <strong style="color: indianred;">{{ message }}</strong>
+                            {% endif %}
                         {% endfor %}
                     {% endif %}
 

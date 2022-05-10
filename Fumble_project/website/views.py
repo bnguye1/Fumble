@@ -1,7 +1,7 @@
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render
 from django.contrib import messages
-from django.contrib.auth import authenticate, login
+from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.forms import AuthenticationForm
 from django.shortcuts import redirect
 from django.conf import settings
@@ -26,8 +26,8 @@ def login_view(request):
         password = request.POST['password-field']
         user = User.objects.get(email__exact=email)
 
-        if user and user.password == password:
-            request.session['member_id'] = user.id
+        if user is not None and user.password == password:
+            request.session['user'] = user.id
             return HttpResponseRedirect('/home')
 
         else:
@@ -37,29 +37,24 @@ def login_view(request):
     return render(request, 'website/login.html')
 
 
-def logout(request):
-    if "email" in request.session:
-        try:
-            del request.session['sessionid']
-            return HttpResponseRedirect('/login')
-
-        except Exception:
-            pass
-
-    return HttpResponseRedirect('/login')
+def logout_view(request):
+    if request.session:
+        logout(request)
+        return render(request, 'website/logout.html')
+    else:
+        return render(request, 'website/login.html')
 
 
 def register(request):
     if request.method == 'POST':
         # TODO - Implement adding users to database when register
-        username = request.POST["username"]
         password = request.POST["password"]
         email = request.POST["email"]
 
         user = User(isCapt=False, teamName="", address="", password=password, email=email)
         user.save()
 
-        return HttpResponse(username + " " + password + " " + email)
+        return HttpResponseRedirect("/login")
 
     else:
         return render(request, 'website/register.html')
@@ -67,10 +62,17 @@ def register(request):
 
 def profile(request):
     # Allow user to view their profile
+    if "user" in request.session and request.session['user'] != {}:
+        return render(request, 'website/profile.html')
 
-    return render(request, 'website/profile.html')
+    else:
+        return HttpResponseRedirect('/login')
 
 
 def map(request):
-    return render(request, 'website/map.html')
+    if "user" in request.session and request.session['user'] != {}:
+        return render(request, 'website/map.html')
+
+    else:
+        return HttpResponseRedirect('/login')
 
