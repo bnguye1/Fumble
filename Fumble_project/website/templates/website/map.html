@@ -59,6 +59,27 @@
             right: 10px;
         }
 
+        .scroll {
+            overflow-y: scroll;
+            height: 900px;
+        }
+
+        .boxcolumn {
+            height: 180px;
+        }
+
+        .challenge {
+            position: absolute;
+            bottom: 3px;
+            right: 3px;
+            border: none;
+            outline: none;
+            width: 100%;
+            background-image: linear-gradient(to bottom right, #5401D6, #7214FF);
+            color: white;
+            border-radius: 20px
+        }
+
         #map {
             height: 900px;
             width: 100%;
@@ -88,7 +109,7 @@
 
 </style>
 
-<body>
+<body onload="create()" style="background-color: #1b1b1b;">
     <ul class="navbar">
         <a class="navbar-title" href="http://127.0.0.1:8000/home">Fumble</a>
         <a class="navbar-item" href="http://127.0.0.1:8000/home"> Home </a>
@@ -97,12 +118,42 @@
         <a class="navbar-item" href="http://127.0.0.1:8000/map"> Map </a>
         <a class="navbar-logout" href="http://127.0.0.1:8000/login">Logout</a>
     </ul>
-    <div id="map"></div>
-        <script async
-                src="https://maps.googleapis.com/maps/api/js?key=sadasd &callback=makeMap&v=weekly"
-                defer>
-
-        </script>
+    <div class="container-fluid" >
+        <div class="row" style="background-color: #1b1b1b;">
+            <div class="col-lg-9 g-0">
+                <div id="map"></div>
+                <script async
+                        src="https://maps.googleapis.com/maps/api/js?key=sadasd &callback=makeMap&v=weekly"
+                        defer>
+                </script>
+            </div>
+            <div class="col-lg-3 g-3 scroll" style="background-color: #1b1b1b;" id="list">
+            </div>
+        </div>
+    </div>
 </body>
+
+<script>
+        function create() {
+            var list = document.getElementById('list')
+            for(var i = 0; i < 5; i++) {
+                list.innerHTML += `
+                    <div class="container" id="teambox${i}">
+                        <div class="row mt-2">
+                            <div class="col-sm-8 g-0 boxcolumn" style="position: relative;">
+                                <h2>Team 1</h2>
+                                <h6>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam...</h6>
+                                <h6 style="position: absolute; bottom: 0; left: 0;">Games: Soccer, Basketball</h6>
+                            </div>
+                            <div class="col-sm-4 g-0" style="position: relative;">
+                                <h2>woooo</h2>
+                                <button class="challenge" id="challengebutton${i}">wee</button>
+                            </div>
+                        </div>
+                    </div>
+                `
+            }
+        }
+</script>
 
 </html>
