@@ -6,6 +6,7 @@ from django.contrib.auth.forms import AuthenticationForm
 from django.shortcuts import redirect
 from django.conf import settings
 from .models import User
+from .models import Profile
 import logging
 
 logger = logging.getLogger()
@@ -50,9 +51,10 @@ def register(request):
         # TODO - Implement adding users to database when register
         password = request.POST["password"]
         email = request.POST["email"]
-
         user = User(isCapt=False, teamName="", address="", password=password, email=email)
         user.save()
+        u_profile = Profile(user, user.email)
+        u_profile.save()
 
         return HttpResponseRedirect("/login")
 
@@ -63,7 +65,11 @@ def register(request):
 def profile(request):
     # Allow user to view their profile
     if "user" in request.session and request.session['user'] != {}:
-        return render(request, 'website/profile.html')
+        user = User.objects.get(id=request.session['user'])
+        context = {
+            'user': user
+        }
+        return render(request, 'website/profile.html', context)
 
     else:
         return HttpResponseRedirect('/login')

@@ -1,5 +1,5 @@
 from django.db import models
-
+import datetime
 
 # Create your models here.
 
@@ -15,13 +15,13 @@ class User(models.Model):
 
 
 # Currently WIP
-"""
-class UserProfile(models.Model):
-    user = models.OneToOneField(User)
-    team_name = models.OneToOneField(User.teamName)
-    last_login = models.OneToOneField(User.last_login)
-    address = models.OneToOneField(User.address)
-"""
+class Profile(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    email = models.CharField(default="", max_length=100)
+    team_name = models.CharField(default="", max_length=100)
+    last_login = models.CharField(default="", max_length=100)
+    address = models.CharField(default="", max_length=100)
+
 
 class Team(models.Model):
     captain = models.ForeignKey(User, on_delete=models.CASCADE, default=0)
