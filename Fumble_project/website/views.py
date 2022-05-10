@@ -1,66 +1,78 @@
-from django.http import HttpResponse
+from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render
 from django.contrib import messages
-from django.contrib.auth import authenticate, login
+from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.forms import AuthenticationForm
 from django.shortcuts import redirect
 from django.conf import settings
 from .models import User
 import logging
 
-
 logger = logging.getLogger()
+
 
 def home(request):
     return render(request, 'website/home.html')
 
+
+
 def about(request):
     return render(request, 'website/about.html')
 
-def login(request):
 
+def login_view(request):
     if request.method == "POST":
-        try:
-            email = request.POST['email-field']
-            password = request.POST['password-field']
-            user = User.objects.get(email__exact=email)
+        email = request.POST['email-field']
+        password = request.POST['password-field']
+        user = User.objects.get(email__exact=email)
 
-            # A "completely" safe approach
-            if user:
-                if user.password == password:
-                    messages.info(request, "You have logged in successfully!")
-                    return HttpResponseRedirect('/home')
-            else:
-                messages.error(request, "Incorrect email address and/or password.")
-                return HttpResponseRedirect('/login')
+        if user is not None and user.password == password:
+            request.session['user'] = user.id
+            return HttpResponseRedirect('/home')
 
-        except Exception:
+        else:
             messages.error(request, "Incorrect email address and/or password.")
             return HttpResponseRedirect('/login')
 
     return render(request, 'website/login.html')
 
+
+def logout_view(request):
+    if request.session:
+        logout(request)
+        return render(request, 'website/logout.html')
+    else:
+        return render(request, 'website/login.html')
+
+
 def register(request):
     if request.method == 'POST':
         # TODO - Implement adding users to database when register
-        username = request.POST["username"]
         password = request.POST["password"]
         email = request.POST["email"]
 
-        # These coordinates are from a random McDonald's somewhere in the world
-        user = User(isCapt=False, locationX=37.033289, locationY=-95.619456, teamName="", password=password, email=email)
+        user = User(isCapt=False, teamName="", address="", password=password, email=email)
         user.save()
 
-        return HttpResponse(username + " " + password + " " + email)
+        return HttpResponseRedirect("/login")
 
     else:
         return render(request, 'website/register.html')
 
-def navbar(request):
-    return render(request, 'website/navbar.html')
-    
+
 def profile(request):
-    return render(request, 'website/profile.html')
-    
+    # Allow user to view their profile
+    if "user" in request.session and request.session['user'] != {}:
+        return render(request, 'website/profile.html')
+
+    else:
+        return HttpResponseRedirect('/login')
+
+
 def map(request):
-    return render(request, 'website/map.html')
+    if "user" in request.session and request.session['user'] != {}:
+        return render(request, 'website/map.html')
+
+    else:
+        return HttpResponseRedirect('/login')
+

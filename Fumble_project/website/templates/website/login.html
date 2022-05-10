@@ -77,16 +77,15 @@
                     <p class="py-5" style="color: #C9C6D6; text-align: center; font-weight: bold;">Who are you?</p>
                     <form method="POST">
                         {% csrf_token %}
-                        {{form.as_p}}
                         <div class="Form">
                             <div class="form-row">
                                 <label class="w-100">
-                                    <input type="email" placeholder="E-mail Address" name="email-field" class="form-control my-2 inputBox" style="font-weight: bold;" id="email-field" required>
+                                    <input type="email" placeholder="E-mail Address" name="email-field" class="form-control custom-class my-2 inputBox" style="font-weight: bold;" id="email-field" required>
                                 </label>
                             </div>
                             <div class="form-row">
                                 <label class="w-100">
-                                    <input type="password" placeholder="Password" name="password-field" class="form-control my-2 inputBox" style="font-weight: bold;" id="password-field" required>
+                                    <input type="password" placeholder="Password" name="password-field" class="form-control custom-class my-2 inputBox" style="font-weight: bold;" id="password-field" required>
                                 </label>
                             </div>
                             <div class="d flex justify-content-center">
@@ -98,6 +97,7 @@
                         </div>
 
                         <button type="submit" id="login-btn" class="loginBtn my-4">Login</button>
+
                     </form>
 
                     <p style="text-align: center;"><a href="#" style="color: #7014FF; text-decoration: none;">Forgot password?</a></p>
@@ -108,8 +108,14 @@
                             {% if message.level == DEFAULT_MESSAGE_LEVELS.ERROR %}
                                 <strong style="color: indianred;">{{ message }}</strong>
                             {% endif %}
+
+                            {% if message.level == DEFAULT_MESSAGE_LEVELS.INFO %}
+                                <strong style="color: indianred;">{{ message }}</strong>
+                            {% endif %}
                         {% endfor %}
                     {% endif %}
+
+
                 </div>
             </div>
         </div>
