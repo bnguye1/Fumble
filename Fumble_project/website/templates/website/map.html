@@ -61,7 +61,13 @@
 
         .scroll {
             overflow-y: scroll;
-            height: 900px;
+            overflow-x: hidden;
+            height: 650px;
+        }
+
+        .searchbox {
+            background-color: #1b1b1b;
+            color: #FFFFFF;
         }
 
         .boxcolumn {
@@ -77,6 +83,25 @@
             width: 100%;
             background-image: linear-gradient(to bottom right, #5401D6, #7214FF);
             color: white;
+            border-radius: 20px
+        }
+
+        .searchbutton {
+            border: none;
+            outline: none;
+            width: 100%;
+            height: 100%;
+            background-image: linear-gradient(to bottom right, #5401D6, #7214FF);
+            color: white;
+            border-radius: 20px
+        }
+
+        .inputBox {
+            border: none;
+            outline: none;
+            height: 50px;
+            width: 100%;
+            background: #403F43;
             border-radius: 20px
         }
 
@@ -109,7 +134,7 @@
 
 </style>
 
-<body onload="create()" style="background-color: #1b1b1b;">
+<body onload="create()" style="background-color: #1b1b1b; overflow-x: hidden;">
     <ul class="navbar">
         <a class="navbar-title" href="http://127.0.0.1:8000/home">Fumble</a>
         <a class="navbar-item" href="http://127.0.0.1:8000/home"> Home </a>
@@ -127,7 +152,40 @@
                         defer>
                 </script>
             </div>
-            <div class="col-lg-3 g-3 scroll" style="background-color: #1b1b1b;" id="list">
+            <div class="col-lg-3 g-3 teamcolumn" style="background-color: #1b1b1b;">
+                <div class="row px-3 scroll" id="list" style="background-color: #1b1b1b;"></div>
+                <hr style="height:3px; border-width:0; color:white; background-color:white">
+                <div class="row searchbox">
+                    <div class="row" style="background-color: #1b1b1b;">
+                        <div class="col-sm-8 fw-bold text-end my-auto">
+                            Distance in Miles:
+                        </div>
+                        <div class="col-sm-4">
+                            <label class="w-100">
+                                <input type="distance" placeholder="25" name="distance" class="form-control inputBox" id="distance">
+                            </label>
+                        </div>
+                    </div>
+                    <div class="row" style="background-color: #1b1b1b;">
+                        <div class="fw-bold">
+                            Address:
+                        </div>
+                        <label class="w-100">
+                            <input type="address" placeholder="123 Placeholder Lane, United States" name="address" class="form-control inputBox" id="address">
+                        </label>
+                        <div class="fw-bold">
+                            Games:
+                        </div>
+                        <div class="col-sm-8">
+                            <label class="w-100">
+                                <input type="games" placeholder="Soccer, Cricket, Starcraft 2" name="games" class="form-control inputBox" id="games">
+                            </label>
+                        </div>
+                        <div class="col-sm-4">
+                            <button class="searchbutton">SEARCH</button>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
