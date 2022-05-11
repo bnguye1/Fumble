@@ -1,17 +1,18 @@
-from django.http import HttpResponse, HttpResponseRedirect
+from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
 from django.shortcuts import render
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.forms import AuthenticationForm
 from django.shortcuts import redirect
 from django.conf import settings
+from django.core import serializers
 from .models import User, Team
 from datetime import datetime
 import logging
 import ast, json
 
-
 logger = logging.getLogger()
+
 
 def home(request):
     return render(request, 'website/home.html')
@@ -96,7 +97,7 @@ def register(request):
         # TODO - Implement adding users to database when register
         password = request.POST["password"]
         email = request.POST["email"]
-        user = User(isCapt=False, teamName="", address="", password=password, email=email)
+        user = User(isCapt=False, password=password, email=email)
         user.save()
 
         return HttpResponseRedirect("/login")
@@ -142,3 +143,8 @@ def map(request):
     else:
         return HttpResponseRedirect('/login')
 
+
+def getTeams(request):
+    json_serializer = serializers.get_serializer("json")()
+    teamsjson = serializers.serialize("json", Team.objects.all())
+    return JsonResponse(teamsjson)

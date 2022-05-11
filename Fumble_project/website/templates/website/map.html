@@ -195,12 +195,14 @@
 <script>
         function create() {
             var list = document.getElementById('list')
-            for(var i = 0; i < 5; i++) {
+            var teams = '{{ team|safe }}'
+
+            for(var i = 0; i < teams.length; i++) {
                 list.innerHTML += `
                     <div class="container" id="teambox${i}">
                         <div class="row mt-2">
                             <div class="col-sm-8 g-0 boxcolumn" style="position: relative;">
-                                <h2>Team 1</h2>
+                                <h2>${teams[i].teamName}</h2>
                                 <h6>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam...</h6>
                                 <h6 style="position: absolute; bottom: 0; left: 0;">Games: Soccer, Basketball</h6>
                             </div>
