@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    {% load static %}
     <!-- Required meta tags -->
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -46,6 +47,30 @@
             position: absolute;
             right: 10px;
         }
+
+        .center-btn {
+            text-align: center;
+            padding: 20px;
+        }
+        .hide-team-list {
+            background-color: #1b1b1b;
+            font-weight: bold;
+            color: white;
+            border-radius: 30px;
+            border: none;
+            outline: none;
+            height: 50px;
+            width: 15%;
+            cursor: pointer;
+        }
+         .container {
+            display: block;
+            justify-content: center;
+            text-align: center;
+        }
+        table.table-responsive {
+            padding: 20px;
+        }
     </style>
 
 </head>
@@ -56,9 +81,46 @@
         <a class="navbar-item"  href="http://127.0.0.1:8000/about"> About </a>
         <a class="navbar-item"  href="http://127.0.0.1:8000/profile"> Profile </a>
         <a class="navbar-item"  href="http://127.0.0.1:8000/map"> Map </a>
-        <a class="navbar-logout" href="http://127.0.0.1:8000/login">Logout</a>
+        <a class="navbar-item" href="http://127.0.0.1:8000/teams">Teams</a>
+        <a class="navbar-logout" href="http://127.0.0.1:8000/logout">Logout</a>
     </ul>
-    <h1>SOMETHING SPECIAL ABOUT YOU MAYBE?</h1>
+
+<div class="center-btn">
+        <button class="hide-team-list" id="hide-team-list" onclick="showhide('team-register-div')">Show/Hide Your Teams</button>
+    </div>
+    <div class="container" id="team-register-div">
+        <div class="row justify-content-center">
+            <div class="col-auto">
+                <table class="table table-responsive">
+                    <thead class="thead-custom">
+                    <tr>
+                        <th scope="col">Team Name</th>
+                        <th scope="col">MMR</th>
+                        <th scope="col">Team Address</th>
+                        <th scope="col">Sports/Games</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for team in user_teams %}
+                        <tr>
+                            <td>{{team.teamName}}</td>
+                            <td>{{team.mmr}}</td>
+                            <td>{{team.teamAddress}}</td>
+                            <td>{{team.sport}}</td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function showhide(id) {
+            let mydiv = document.getElementById(id)
+            mydiv.style.display = (mydiv.style.display !== "none") ? "none" : "block";
+        }
+    </script>
 
 </body>
 </html>
