@@ -11,7 +11,6 @@ import json
 
 logger = logging.getLogger()
 
-
 def home(request):
     return render(request, 'website/home.html')
 
