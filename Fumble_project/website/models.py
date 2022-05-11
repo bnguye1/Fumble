@@ -22,3 +22,16 @@ class Team(models.Model):
     sport = models.TextField(default="")
 
 
+# Experimental Model for Challenge System
+class Match(models.Model):
+    team1_name = models.TextField()
+    team2_name = models.TextField()
+    team1_confirm = models.IntegerField()
+    team2_confirm = models.IntegerField()
+    team1_results = models.TextField()
+    team2_results = models.TextField()
+    team1_comments = models.TextField()
+    team2_comments = models.TextField()
+
+
+
