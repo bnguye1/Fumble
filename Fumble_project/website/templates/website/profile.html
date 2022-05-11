@@ -46,6 +46,12 @@
             position: absolute;
             right: 10px;
         }
+
+        .container {
+            display: inline-block;
+            justify-content: center;
+        }
+
     </style>
 
 </head>
@@ -58,8 +64,9 @@
         <a class="navbar-item"  href="http://127.0.0.1:8000/map"> Map </a>
         <a class="navbar-logout" href="http://127.0.0.1:8000/logout">Logout</a>
     </ul>
-    <h1>SOMETHING SPECIAL ABOUT YOU MAYBE?</h1>
-    <h2>Welcome to {{user.email}}'s profile page! Take a {{user.password}} and try to find out this user's password.</h2>
+    <div class="container">
+
+    </div>
 
 </body>
 </html>

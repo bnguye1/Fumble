@@ -14,13 +14,7 @@ class User(models.Model):
     last_login = models.TextField(default="")
 
 
-# Currently WIP
-class Profile(models.Model):
-    user = models.OneToOneField(User, on_delete=models.CASCADE)
-    email = models.CharField(default="", max_length=100)
-    team_name = models.CharField(default="", max_length=100)
-    last_login = models.CharField(default="", max_length=100)
-    address = models.CharField(default="", max_length=100)
+# Current a work-in-progress idea
 
 
 class Team(models.Model):
