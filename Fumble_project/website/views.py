@@ -6,8 +6,10 @@ from django.contrib.auth.forms import AuthenticationForm
 from django.shortcuts import redirect
 from django.conf import settings
 from .models import User, Team
+from datetime import datetime
 import logging
 import json
+
 
 logger = logging.getLogger()
 
@@ -22,6 +24,7 @@ def about(request):
 def teams(request):
     if "user" in request.session and request.session['user'] != {}:
         if request.method == "POST":
+            name = request.POST['name-field']
             email = request.POST['email-field']
             address = request.POST['address-field']
             sports = request.POST['sport-field']
@@ -32,7 +35,7 @@ def teams(request):
                 if user is not None:
                     # Convert sports to JSON list
                     sports_json = json.dumps(sports.split(','))
-                    team = Team(captain=user, mmr=0, teamAddress=address, sport=sports_json)
+                    team = Team(teamName=name, captain=user, mmr=0, teamAddress=address, sport=sports_json)
                     team.save()
                     return HttpResponseRedirect('/teams')
 
@@ -54,6 +57,7 @@ def login_view(request):
         user = User.objects.get(email__exact=email)
 
         if user is not None and user.password == password:
+            #User.objects.filter(id=last_login).update(datetime.now())
             request.session['user'] = user.id
             return HttpResponseRedirect('/home')
 
