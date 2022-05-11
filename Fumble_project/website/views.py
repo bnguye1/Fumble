@@ -8,7 +8,7 @@ from django.conf import settings
 from .models import User, Team
 from datetime import datetime
 import logging
-import json
+import ast, json
 
 
 logger = logging.getLogger()
@@ -37,15 +37,29 @@ def teams(request):
                     sports_json = json.dumps(sports.split(','))
                     team = Team(teamName=name, captain=user, mmr=0, teamAddress=address, sport=sports_json)
                     team.save()
+
+                    # Get the captain's team list
+                    team_list = user.teams
+
+                    # First time captain has a team
+                    if team_list == "":
+                        user.teams = str([name])
+
+                    else:
+                        # Convert list to string and then add new team into list
+                        teams_list = ast.literal_eval(team_list)
+                        teams_list.append(name)
+                        user.teams = json.dumps(teams_list)
+
+                    user.save()
+                    messages.info(request, f"{name} has been registered as a team.")
                     return HttpResponseRedirect('/teams')
 
             except Exception:
                 messages.error(request, "Please enter the correct email.")
                 return HttpResponseRedirect('/teams')
-
         else:
             return render(request, 'website/teams.html')
-
     else:
         return HttpResponseRedirect('/login')
 
@@ -57,7 +71,8 @@ def login_view(request):
         user = User.objects.get(email__exact=email)
 
         if user is not None and user.password == password:
-            #User.objects.filter(id=last_login).update(datetime.now())
+            user.last_login = datetime.now()
+            user.save()
             request.session['user'] = user.id
             return HttpResponseRedirect('/home')
 

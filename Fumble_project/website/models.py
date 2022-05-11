@@ -11,8 +11,7 @@ class User(models.Model):
     email = models.TextField(default="")
     is_active = models.BooleanField(default=True)
     last_login = models.TextField(default="")
-
-# Current a work-in-progress idea
+    teams = models.TextField(default="")
 
 
 class Team(models.Model):
@@ -20,6 +19,6 @@ class Team(models.Model):
     teamName = models.TextField(default="")
     mmr = models.IntegerField()
     teamAddress = models.TextField(default="")
-    sport = models.TextField()
+    sport = models.TextField(default="")
 
 
