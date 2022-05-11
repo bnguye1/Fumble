@@ -109,9 +109,26 @@ def profile(request):
     # Allow user to view their profile
     if "user" in request.session and request.session['user'] != {}:
         user = User.objects.get(id=request.session['user'])
-        context = {
-            'user': user
-        }
+        teams_list = ast.literal_eval(user.teams)
+        team_objects = []
+
+        if len(teams_list) != 0:
+            for name in teams_list:
+                a_team = Team.objects.get(teamName=name)
+                team_objects.append(a_team)
+
+            context = {
+                'has_teams': True,
+                'user': user,
+                'user_teams': team_objects
+            }
+
+        else:
+            context = {
+                'has_teams': False,
+                'user': user,
+            }
+
         return render(request, 'website/profile.html', context)
 
     else:
