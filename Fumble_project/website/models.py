@@ -24,14 +24,15 @@ class Team(models.Model):
 
 # Experimental Model for Challenge System
 class Match(models.Model):
-    team1_name = models.TextField()
-    team2_name = models.TextField()
-    team1_confirm = models.IntegerField()
-    team2_confirm = models.IntegerField()
-    team1_results = models.TextField()
-    team2_results = models.TextField()
-    team1_comments = models.TextField()
-    team2_comments = models.TextField()
+    host_team = models.ForeignKey(Team, on_delete=models.CASCADE, related_name="host_team", default=0)
+    opponent_team = models.ForeignKey(Team, on_delete=models.CASCADE, related_name="opponent_team", default=0)
+    host_win = models.BooleanField(default=False)
+    opponent_win = models.BooleanField(default=False)
+    host_accept = models.BooleanField(default=False)
+    opponent_accept = models.BooleanField(default=False)
+    match_sport = models.TextField(default="")
+    match_time = models.TextField(default="")
+    match_status = models.TextField(default="Waiting for both teams to accept")
 
 
 

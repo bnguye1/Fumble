@@ -14,8 +14,13 @@ from .models import User, Team, Match
 
 logger = logging.getLogger()
 
+
 def home(request):
-    return render(request, 'website/home.html')
+    if "user" in request.session and request.session['user'] != {}:
+        return render(request, 'website/home.html')
+
+    else:
+        return HttpResponseRedirect('/home')
 
 
 def about(request):
@@ -51,6 +56,9 @@ def teams(request):
                         teams_list = ast.literal_eval(team_list)
                         teams_list.append(name)
                         user.teams = json.dumps(teams_list)
+
+                        if not user.isCapt:
+                            user.isCapt = True
 
                     user.save()
                     messages.info(request, f"{name} has been registered as a team.")
@@ -112,7 +120,7 @@ def register(request):
         # TODO - Implement adding users to database when register
         password = request.POST["password"]
         email = request.POST["email"]
-        user = User(isCapt=False, teamName="", address="", password=password, email=email)
+        user = User(isCapt=False, address="", password=password, email=email)
         user.save()
 
         return HttpResponseRedirect("/login")
@@ -160,5 +168,39 @@ def map(request):
 
 
 def challenge(request):
-    return render(request, 'website/challenge.html')
+    if "user" in request.session and request.session['user'] != {}:
+        if request.method == "POST":
+            team1 = request.POST['team1-name-field']
+            team2 = request.POST['team2-name-field']
+            sport = request.POST['sports-field']
+            match_time = request.POST['time-field']
+
+            # Get both team objects
+            team1_obj = Team.objects.get(teamName=team1)
+            team2_obj = Team.objects.get(teamName=team2)
+
+            # Create match
+            match = Match(host_team=team1_obj, opponent_team=team2_obj,
+                          host_accept=True, match_sport=sport, match_time=match_time)
+            match.save()
+
+        else:
+            # Get a list of all the registered teams
+            all_teams = Team.objects.all()
+
+            if len(all_teams) != 0:
+                context = {
+                    'all_teams': all_teams,
+                    'has_teams': True
+                }
+
+            else:
+                context = {
+                    'has_teams': False
+                }
+
+            return render(request, 'website/challenge.html', context)
+
+    else:
+        return HttpResponseRedirect('/login')
 

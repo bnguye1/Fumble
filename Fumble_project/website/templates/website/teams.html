@@ -115,51 +115,6 @@
         <a class="navbar-logout" href="http://127.0.0.1:8000/logout">Logout</a>
     </ul>
     <div class="center-btn">
-        <button class="hide-teams" id="hide-teams" onclick="showhide('teams-div')">Show/Hide Official Teams</button>
-    </div>
-    <div class="container2" id="teams-div">
-        <h2>Official Teams List</h2>
-        <div class="row justify-content-center">
-            <div class="col-auto">
-                <table class="table table-responsive">
-                    <thead class="thead-custom">
-                    <tr>
-                        <th scope="col">Team Name</th>
-                        <th scope="col">Team Captain ID</th>
-                        <th scope="col">MMR</th>
-                        <th scope="col">Sports/Games</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                        {% if has_teams %}
-                            {% for team in all_teams %}
-                            <tr>
-                                <td>{{team.teamName}}</td>
-                                <td>{{team.captain.id}}</td>
-                                <td>{{team.mmr}}</td>
-                                <td>{{team.sport}}</td>
-                            </tr>
-                            {% endfor %}
-                        {% endif %}
-                    </tbody>
-                </table>
-            </div>
-
-        {% if messages %}
-            {% for message in messages %}
-                {% if message.level == DEFAULT_MESSAGE_LEVELS.ERROR %}
-                    <strong style="color: indianred;">{{ message }}</strong>
-                {% endif %}
-                {% if message.level == DEFAULT_MESSAGE_LEVELS.INFO %}
-                    <strong style="color: darkgreen;">{{ message }}</strong>
-                {% endif %}
-
-            {% endfor %}
-        {% endif %}
-        </div>
-    </div>
-
-    <div class="center-btn">
         <button class="hide-team-register" id="hide-team-register" onclick="showhide('team-register-div')">Show/Hide Team Registration</button>
     </div>
     <div class="container" style="display: none;" id="team-register-div">
@@ -203,6 +158,38 @@
 
             {% endfor %}
         {% endif %}
+    </div>
+    <div class="center-btn">
+        <button class="hide-teams" id="hide-teams" onclick="showhide('teams-div')">Show/Hide Official Teams</button>
+    </div>
+    <div class="container2" id="teams-div">
+        <h2>Official Teams List</h2>
+        <div class="row justify-content-center">
+            <div class="col-auto">
+                <table class="table table-responsive">
+                    <thead class="thead-custom">
+                    <tr>
+                        <th scope="col">Team Name</th>
+                        <th scope="col">Team Captain ID</th>
+                        <th scope="col">MMR</th>
+                        <th scope="col">Sports/Games</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                        {% if has_teams %}
+                            {% for team in all_teams %}
+                            <tr>
+                                <td>{{team.teamName}}</td>
+                                <td>{{team.captain.id}}</td>
+                                <td>{{team.mmr}}</td>
+                                <td>{{team.sport}}</td>
+                            </tr>
+                            {% endfor %}
+                        {% endif %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
     </div>
 
     <script>
