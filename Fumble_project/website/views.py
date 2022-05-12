@@ -1,60 +1,22 @@
-import ast
-import json
-import logging
-from datetime import datetime
-from django.conf import settings
+from django.http import HttpResponse, HttpResponseRedirect
+from django.shortcuts import render
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.forms import AuthenticationForm
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import redirect
-from django.shortcuts import render
+from django.conf import settings
+from .models import User, Team
+from datetime import datetime
+import logging
+import ast, json
 
-from .models import User, Team, Match
+from .models import User, Team
 
 logger = logging.getLogger()
 
-
 def home(request):
-    if "user" in request.session and request.session['user'] != {}:
-        if request.method == "POST":
-            confirm = request.POST['confirm-box']
-            match = request.POST['match']
-            print(request.POST)
-            #print(confirm_result, opponent, host)
-
-        else:
-            user = User.objects.get(id=request.session['user'])
-            matches_list = Match.objects.all()
-
-            try:
-                teams_list = ast.literal_eval(user.teams)
-                my_match_objects = []
-                if len(matches_list) != 0:
-                    for match in matches_list:
-                        if match.host_team.teamName in teams_list or match.opponent_team.teamName in teams_list:
-                            my_match_objects.append(match)
-
-                    context = {
-                        'has_matches': True,
-                        'user': user,
-                        'matches': my_match_objects
-                    }
-
-                else:
-                    context = {
-                        'has_matches': False,
-                        'user': user,
-                    }
-
-                print(my_match_objects)
-
-                return render(request, 'website/home.html', context)
-            except Exception:
-                return render(request, 'website/home.html', {})
-    else:
-        return HttpResponseRedirect('/home')
-
+    return render(request, 'website/home.html')
 
 def about(request):
     return render(request, 'website/about.html')
@@ -89,9 +51,6 @@ def teams(request):
                         teams_list = ast.literal_eval(team_list)
                         teams_list.append(name)
                         user.teams = json.dumps(teams_list)
-
-                        if not user.isCapt:
-                            user.isCapt = True
 
                     user.save()
                     messages.info(request, f"{name} has been registered as a team.")
@@ -150,9 +109,10 @@ def logout_view(request):
 
 def register(request):
     if request.method == 'POST':
+        # TODO - Implement adding users to database when register
         password = request.POST["password"]
         email = request.POST["email"]
-        user = User(isCapt=False, address="", password=password, email=email)
+        user = User(isCapt=False, password=password, email=email)
         user.save()
 
         return HttpResponseRedirect("/login")
@@ -192,49 +152,20 @@ def profile(request):
 
 
 def map(request):
+
     if "user" in request.session and request.session['user'] != {}:
-        return render(request, 'website/map.html')
+        teams = Team.objects.all()  # gets all registered team objects from database table
+        context = {
+            'teams': teams,
+            'has_teams': True
+        }
+
+        return render(request, 'website/map.html', context)
 
     else:
         return HttpResponseRedirect('/login')
 
 
 def challenge(request):
-    if "user" in request.session and request.session['user'] != {}:
-        if request.method == "POST":
-            team1 = request.POST['team1-name-field']
-            team2 = request.POST['team2-name-field']
-            sport = request.POST['sports-field']
-            match_time = request.POST['time-field']
-
-            # Get both team objects
-            team1_obj = Team.objects.get(teamName=team1)
-            team2_obj = Team.objects.get(teamName=team2)
-
-            # Create match
-            match = Match(host_team=team1_obj, opponent_team=team2_obj,
-                          host_accept=True, match_sport=sport, match_time=match_time)
-            match.save()
-
-            messages.info(request, f"A match request to team {team2_obj.teamName} has been sent.")
-            return HttpResponseRedirect('/challenge')
-        else:
-            # Get a list of all the registered teams
-            all_teams = Team.objects.all()
-
-            if len(all_teams) != 0:
-                context = {
-                    'all_teams': all_teams,
-                    'has_teams': True
-                }
-
-            else:
-                context = {
-                    'has_teams': False
-                }
-
-            return render(request, 'website/challenge.html', context)
-
-    else:
-        return HttpResponseRedirect('/login')
+    return render(request, 'website/challenge.html')
 
