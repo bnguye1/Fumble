@@ -171,11 +171,11 @@
             <div class="col-lg-9 g-0">
                 <div id="map"></div>
                 <script async
-                        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDx4-0aprVkyC4flc4J-N8Lvb6M-0rgaLM&callback=makeMap&v=weekly"
+                        src="https://maps.googleapis.com/maps/api/js?key=INSERT API KEY HERE&callback=makeMap&v=weekly"
                         defer>
                 </script>
             </div>
-            <form class="col-lg-3 g-3 teamcolumn" style="background-color: #1b1b1b;">
+            <div class="col-lg-3 g-3 teamcolumn" style="background-color: #1b1b1b;">
                 <div class="row px-3 scroll" id="list" style="background-color: #1b1b1b;">
                     {% if has_teams %}
                         {% for team in teams %}
@@ -208,7 +208,7 @@
                     </div>
                     <div class="row" style="background-color: #1b1b1b;">
                         <div class="fw-bold">
-                            Address:
+                            Address:AIzaSyAYlpQsYQCecQGQbb7kT25EtATddtognVA
                         </div>
                         <label class="w-100">
                             <input type="address" placeholder="123 Placeholder Lane, United States" name="address" class="form-control inputBox" id="address">
@@ -225,7 +225,7 @@
                             <button class="searchbutton">SEARCH</button>
                         </div>
                     </div>
-                </form>
+                </div>
             </div>
         </div>
     </div>
