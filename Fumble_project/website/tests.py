@@ -4,6 +4,7 @@ from contextlib import contextmanager
 from django.urls import reverse, resolve
 from django.contrib.staticfiles.testing import StaticLiveServerTestCase
 from selenium import webdriver
+from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.common.by import By
 from selenium.webdriver.firefox.webdriver import WebDriver
 from selenium.webdriver.common.keys import Keys
@@ -271,3 +272,14 @@ class TestPages(SimpleTestCase):
         driver = webdriver.Firefox()
         driver.get("http://127.0.0.1:8000/map/")
         potential_map = driver.find_element(By.ID, "map")
+
+
+class MapListTest(StaticLiveServerTestCase):
+    def testList(self):
+        url = reverse('website-map')
+        self.assertEquals(resolve(url).func, map)
+
+        driver = webdriver.Firefox()
+        driver.get("http://127.0.0.1:8000/map/")
+
+        self.assertNotEqual(driver.find_elements(By.NAME, "Evan's Fan Club"), 0)

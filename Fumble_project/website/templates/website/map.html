@@ -158,7 +158,7 @@
                 <div class="row px-3 scroll" id="list" style="background-color: #1b1b1b;">
                     {% if has_teams %}
                         {% for team in teams %}
-                            <div class="container" id="teambox{{ forloop.counter }}">
+                            <div class="container" id="teambox{{ forloop.counter }}" name="{{ team.teamName }}">
                                 <div class="row mt-2">
                                     <div class="col-sm-8 g-0 boxcolumn" style="position: relative;">
                                         <h2>{{ team.teamName }}</h2>
