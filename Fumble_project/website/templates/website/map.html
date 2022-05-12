@@ -134,7 +134,7 @@
 
 </style>
 
-<body onload="create()" style="background-color: #1b1b1b; overflow-x: hidden;">
+<body style="background-color: #1b1b1b; overflow-x: hidden;">
     <ul class="navbar">
         <a class="navbar-title" href="http://127.0.0.1:8000/home">Fumble</a>
         <a class="navbar-item" href="http://127.0.0.1:8000/home"> Home </a>
@@ -155,7 +155,24 @@
                 </script>
             </div>
             <div class="col-lg-3 g-3 teamcolumn" style="background-color: #1b1b1b;">
-                <div class="row px-3 scroll" id="list" style="background-color: #1b1b1b;"></div>
+                <div class="row px-3 scroll" id="list" style="background-color: #1b1b1b;">
+                    {% if has_teams %}
+                        {% for team in teams %}
+                            <div class="container" id="teambox{{ forloop.counter }}">
+                                <div class="row mt-2">
+                                    <div class="col-sm-8 g-0 boxcolumn" style="position: relative;">
+                                        <h2>{{ team.teamName }}</h2>
+                                        <h6>Description</h6>
+                                        <h6 style="position: absolute; bottom: 0; left: 0;">{{ team.sport }}</h6>
+                                    </div>
+                                    <div class="col-sm-4 g-0" style="position: relative;">
+                                        <button class="challenge" id="challengebutton{{ forloop.counter }}">CHALLENGE</button>
+                                    </div>
+                                </div>
+                            </div>
+                        {% endfor %}
+                    {% endif %}
+                </div>
                 <hr style="height:3px; border-width:0; color:white; background-color:white">
                 <div class="row searchbox">
                     <div class="row" style="background-color: #1b1b1b;">
@@ -192,30 +209,4 @@
         </div>
     </div>
 </body>
-
-<script>
-        function create() {
-            var list = document.getElementById('list')
-            var teams = '{{ team|safe }}'
-
-            for(var i = 0; i < teams.length; i++) {
-                list.innerHTML += `
-                    <div class="container" id="teambox${i}">
-                        <div class="row mt-2">
-                            <div class="col-sm-8 g-0 boxcolumn" style="position: relative;">
-                                <h2>${teams[i].teamName}</h2>
-                                <h6>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam...</h6>
-                                <h6 style="position: absolute; bottom: 0; left: 0;">Games: Soccer, Basketball</h6>
-                            </div>
-                            <div class="col-sm-4 g-0" style="position: relative;">
-                                <h2>woooo</h2>
-                                <button class="challenge" id="challengebutton${i}">wee</button>
-                            </div>
-                        </div>
-                    </div>
-                `
-            }
-        }
-</script>
-
 </html>

@@ -153,7 +153,13 @@ def profile(request):
 
 def map(request):
     if "user" in request.session and request.session['user'] != {}:
-        return render(request, 'website/map.html')
+        teams = Team.objects.all()  # gets all registered team objects from database table
+        context = {
+            'teams': teams,
+            'has_teams': True
+        }
+
+        return render(request, 'website/map.html', context)
 
     else:
         return HttpResponseRedirect('/login')
