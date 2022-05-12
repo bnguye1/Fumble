@@ -26,28 +26,32 @@ def home(request):
         else:
             user = User.objects.get(id=request.session['user'])
             matches_list = Match.objects.all()
-            teams_list = ast.literal_eval(user.teams)
-            my_match_objects = []
-            if len(matches_list) != 0:
-                for match in matches_list:
-                    if match.host_team.teamName in teams_list or match.opponent_team.teamName in teams_list:
-                        my_match_objects.append(match)
 
-                context = {
-                    'has_matches': True,
-                    'user': user,
-                    'matches': my_match_objects
-                }
+            try:
+                teams_list = ast.literal_eval(user.teams)
+                my_match_objects = []
+                if len(matches_list) != 0:
+                    for match in matches_list:
+                        if match.host_team.teamName in teams_list or match.opponent_team.teamName in teams_list:
+                            my_match_objects.append(match)
 
-            else:
-                context = {
-                    'has_matches': False,
-                    'user': user,
-                }
+                    context = {
+                        'has_matches': True,
+                        'user': user,
+                        'matches': my_match_objects
+                    }
 
-            print(my_match_objects)
+                else:
+                    context = {
+                        'has_matches': False,
+                        'user': user,
+                    }
 
-            return render(request, 'website/home.html', context)
+                print(my_match_objects)
+
+                return render(request, 'website/home.html', context)
+            except Exception:
+                return render(request, 'website/home.html', {})
     else:
         return HttpResponseRedirect('/home')
 
