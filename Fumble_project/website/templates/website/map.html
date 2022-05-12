@@ -148,23 +148,7 @@
             background-color: grey;
         }
     </style>
-
-    <script type="module">
-        function makeMap() {
-            const defLocation = {lat: 39.2543, lng: -76.7100};
-            const map = new google.maps.Map(document.getElementById("map"), {
-                zoom: 15,
-                center: defLocation,
-            });
-
-            const teamOneLoc = new google.maps.Marker({
-                position: defLocation,
-                map: map,
-            });
-        }
-
-        window.makeMap = makeMap;
-    </script>
+    
 </head>
 
 <style>
@@ -187,7 +171,7 @@
             <div class="col-lg-9 g-0">
                 <div id="map"></div>
                 <script async
-                        src="https://maps.googleapis.com/maps/api/js?key=sadasd &callback=makeMap&v=weekly"
+                        src="https://maps.googleapis.com/maps/api/js?key=INSERT API KEY HERE&callback=makeMap&v=weekly"
                         defer>
                 </script>
             </div>
@@ -224,7 +208,7 @@
                     </div>
                     <div class="row" style="background-color: #1b1b1b;">
                         <div class="fw-bold">
-                            Address:
+                            Address:AIzaSyAYlpQsYQCecQGQbb7kT25EtATddtognVA
                         </div>
                         <label class="w-100">
                             <input type="address" placeholder="123 Placeholder Lane, United States" name="address" class="form-control inputBox" id="address">
