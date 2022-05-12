@@ -100,7 +100,32 @@
                         </tr>
                         </thead>
                         <tbody>
-
+                            {% if has_matches %}
+                                {%  for match in matches %}
+                                <tr>
+                                    <td>
+                                        {% if match.host_team.teamName in user.teams  %}
+                                            {{ match.opponent_team }}
+                                        {% else %}
+                                            {{ match.host_team }}
+                                        {% endif %}
+                                    </td>
+                                    <td>
+                                        {% if match.host_team.teamName in user.teams  %}
+                                            {{ match.host_win }}
+                                        {% else %}
+                                            {{ match.opponent_win }}
+                                        {% endif %}
+                                    </td>
+                                    <td>
+                                        0
+                                    </td>
+                                    <td>
+                                        {{ match.status }}
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                            {% endif %}
                         </tbody>
                     </table>
                 </div>

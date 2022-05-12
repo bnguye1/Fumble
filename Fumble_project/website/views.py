@@ -17,7 +17,29 @@ logger = logging.getLogger()
 
 def home(request):
     if "user" in request.session and request.session['user'] != {}:
-        return render(request, 'website/home.html')
+        user = User.objects.get(id=request.session['user'])
+        matches_list = Match.objects.all()
+        teams_list = ast.literal_eval(user.teams)
+        my_match_objects = []
+
+        if matches_list.exists():
+            for match in matches_list:
+                if match.host_team in teams_list or match.opponent_team in teams_list:
+                    my_match_objects.append(match)
+
+            context = {
+                'has_matches': True,
+                'user': user,
+                'matches': my_match_objects
+            }
+
+        else:
+            context = {
+                'has_matches': False,
+                'user': user,
+            }
+
+        return render(request, 'website/home.html', context)
 
     else:
         return HttpResponseRedirect('/home')
