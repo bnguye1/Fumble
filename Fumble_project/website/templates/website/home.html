@@ -63,11 +63,32 @@
 
         }
         .card-body {
-            font-weight: bold;
-            font-size: 30px;
+            min-height: 325px;
+            min-width: 450px;
+            margin-right: 20px;
         }
-        table.table-responsive {
+        .scrolling-wrapper {
+            margin: 0 auto;
+            vertical-align: middle;
+            overflow-x: scroll;
+            overflow-y: hidden;
+            white-space: nowrap;
+            width: 30%;
+            align-items: center;
             padding: 20px;
+
+        }
+        .update-match-btn {
+            background-image: linear-gradient(to bottom right, #5401D6, #7214FF);
+            font-weight: bold;
+            margin: 0 auto;
+            color: white;
+            border-radius: 30px;
+            border: none;
+            outline: none;
+            height: 50px;
+            width: 50%;
+            cursor: pointer;
         }
     </style>
 </head>
@@ -83,59 +104,43 @@
         <a class="navbar-item" href="http://127.0.0.1:8000/challenge">Challenge</a>
         <a class="navbar-logout" href="http://127.0.0.1:8000/logout">Logout</a>
     </ul>
-    <div class="container">
-        <div class="card w-75">
-            <div class="card-body align-items-center d-flex justify-content-center">
-                Your Matches
-            </div>
-            <div class="row justify-content-center">
-                <div class="col-auto">
-                    <table class="table table-responsive">
-                        <thead class="table">
-                        <tr>
-                            <th scope="col">Opponent</th>
-                            <th scope="col">Win/Loss</th>
-                            <th scope="col">MMR Rating</th>
-                            <th scope="col">Status</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                            {% if has_matches %}
-                                {%  for match in matches %}
-                                <tr>
-                                    <td>
-                                        {% if match.host_team.teamName in user.teams  %}
-                                            {{ match.opponent_team }}
-                                        {% else %}
-                                            {{ match.host_team }}
-                                        {% endif %}
-                                    </td>
-                                    <td>
-                                        {% if match.host_team.teamName in user.teams  %}
-                                            {{ match.host_win }}
-                                        {% else %}
-                                            {{ match.opponent_win }}
-                                        {% endif %}
-                                    </td>
-                                    <td>
-                                        0
-                                    </td>
-                                    <td>
-                                        {{ match.status }}
-                                    </td>
-                                </tr>
-                                {% endfor %}
-                            {% endif %}
-                        </tbody>
-                    </table>
-                </div>
-            </div>
 
+    {% if has_matches %}
+        <div style="text-align: center; padding: 20px;">
+            <h3>Your Pending Matches</h3>
         </div>
-    </div>
-
-
-
+        <div class="scrolling-wrapper">
+            <div class="d-flex flex-row flex-nowrap">
+                    {% for match in matches %}
+                        <form method="post">
+                            {% csrf_token %}
+                            <div class="card card-body">
+                                <div style="text-align: center; padding: 20px;">
+                                    <h6 style="font-weight: bold; color: #7214FF;">Match Request</h6>
+                                    <h4 class="host-team" id="host-team" name="host-team">{{match.host_team.teamName}}</h4>
+                                    <h4 class="opponent-team" id="opponent-team" name="opponent-team">{{match.opponent_team.teamName}}</h4>
+                                    <h5 class="match-sport" id="match-sport" name="match-sport">{{match.match_sport}}</h5>
+                                    <h5>{{match.match_time}}</h5>
+                                </div>
+                                <div class="form-row">
+                                    <label class="w-100" style="text-align: center;">
+                                        <label for="confirm-box" style="font-weight: bold;">What will you do?</label>
+                                        <select class="custom-select" name="confirm-box" id="confirm-box">
+                                            <option disabled selected value>-- Select an option --</option>
+                                            <option value="accept">Accept match</option>
+                                            <option value="reject">Reject match</option>
+                                        </select>
+                                    </label>
+                                </div>
+                                <button type="submit" class="update-match-btn mt-auto" id="update-match-btn" class="update-match-btn">
+                                    Update
+                                </button>
+                            </div>
+                        </form>
+                    {% endfor %}
+            </div>
+        </div>
+    {% endif %}
 </body>
 
 </html>

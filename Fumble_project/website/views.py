@@ -17,30 +17,37 @@ logger = logging.getLogger()
 
 def home(request):
     if "user" in request.session and request.session['user'] != {}:
-        user = User.objects.get(id=request.session['user'])
-        matches_list = Match.objects.all()
-        teams_list = ast.literal_eval(user.teams)
-        my_match_objects = []
-
-        if matches_list.exists():
-            for match in matches_list:
-                if match.host_team in teams_list or match.opponent_team in teams_list:
-                    my_match_objects.append(match)
-
-            context = {
-                'has_matches': True,
-                'user': user,
-                'matches': my_match_objects
-            }
+        if request.method == "POST":
+            confirm = request.POST['confirm-box']
+            match = request.POST['match']
+            print(request.POST)
+            #print(confirm_result, opponent, host)
 
         else:
-            context = {
-                'has_matches': False,
-                'user': user,
-            }
+            user = User.objects.get(id=request.session['user'])
+            matches_list = Match.objects.all()
+            teams_list = ast.literal_eval(user.teams)
+            my_match_objects = []
+            if len(matches_list) != 0:
+                for match in matches_list:
+                    if match.host_team.teamName in teams_list or match.opponent_team.teamName in teams_list:
+                        my_match_objects.append(match)
 
-        return render(request, 'website/home.html', context)
+                context = {
+                    'has_matches': True,
+                    'user': user,
+                    'matches': my_match_objects
+                }
 
+            else:
+                context = {
+                    'has_matches': False,
+                    'user': user,
+                }
+
+            print(my_match_objects)
+
+            return render(request, 'website/home.html', context)
     else:
         return HttpResponseRedirect('/home')
 
