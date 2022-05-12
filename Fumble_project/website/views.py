@@ -17,6 +17,9 @@ logger = logging.getLogger()
 def home(request):
     return render(request, 'website/home.html')
 
+    else:
+        return HttpResponseRedirect('/home')
+
 
 def about(request):
     return render(request, 'website/about.html')
