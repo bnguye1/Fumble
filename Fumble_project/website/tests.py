@@ -245,7 +245,7 @@ class LoginTestCase(TestCase):
             login.click()
             self.assertIsNotNone(elem)
 
-class TestPages(SimpleTestCase):
+class TestPages(TestCase):
     def testNavBar(self):
         # Test whether the URL routes correctly to the navigation bar.
         url = reverse('navigation-bar')
@@ -263,11 +263,16 @@ class TestPages(SimpleTestCase):
         potential_ben = driver.find_element(By.CLASS_NAME, "ben")
 
     def testMap(self):
-        # Test whether the URL routes correctly to the map page.
-        url = reverse('website-map')
-        self.assertEquals(resolve(url).func, map)
 
         # Use Selenium to ensure that the map element is present.
         driver = webdriver.Firefox()
         driver.get("http://127.0.0.1:8000/map/")
         potential_map = driver.find_element(By.ID, "map")
+        
+        #Test whether we can interact with the map. 
+        potential_map.click()
+        
+        #Tried to test the markers (didn't work):
+        #driver.implicitly_wait(10)
+        #is_marker_placed = driver.find_element(By.CSS_SELECTOR, "Will We Win").click()
+

@@ -8,6 +8,7 @@ from django.conf import settings
 from .models import User
 import logging
 
+from .models import User, Team
 
 logger = logging.getLogger()
 
@@ -63,4 +64,9 @@ def profile(request):
     return render(request, 'website/profile.html')
     
 def map(request):
-    return render(request, 'website/map.html')
+    teams = Team.objects.all()
+    print(teams)
+    context = {
+    'teams': teams,
+    }
+    return render(request, 'website/map.html', context)

@@ -5,18 +5,39 @@
 		<title> Map </title>
 
 		<script type = "module">
+		
 		function makeMap(){
+				
 				const defLocation = {lat: 39.2543, lng: -76.7100};
 				const map = new google.maps.Map(document.getElementById("map"), {
 				zoom: 15,
 				center: defLocation,
 				});
 				
-				const teamOneLoc = new google.maps.Marker({
-					position: defLocation,
-					map: map,
-				});
+				"{% for team in teams %}"
+				var address = "{{team.teamAddress}}";
+				var description = "Team Name: " + "{{team.teamName}}";
+				var geocoder = new google.maps.Geocoder();
+				geocoder.geocode( { 'address': address}, function(results, status) {
+        				var marker = new google.maps.Marker({
+            				map: map,
+            				position: results[0].geometry.location,
+            				title: description,
+            				optimized: false
+      		  			});	
+      		  			var infoWindow = new google.maps.InfoWindow();
+ 
+  					marker.addListener("click", () => {
+      					infoWindow.close();
+      					infoWindow.setContent(marker.getTitle());
+      					infoWindow.open(marker.getMap(), marker);
+  				});
+  					
+  				});
+  				
+				"{% endfor %}"
 			}
+			
 			window.makeMap = makeMap;
 		</script>
 	</head>
