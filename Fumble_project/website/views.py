@@ -19,8 +19,8 @@ def home(request):
     if "user" in request.session and request.session['user'] != {}:
         if request.method == "POST":
             confirm = request.POST['confirm-box']
-            match = request.POST['match']
-            print(request.POST)
+            #match = request.POST['match']
+            print(request.POST['host-team-name'])
             #print(confirm_result, opponent, host)
 
         else:
@@ -165,27 +165,31 @@ def profile(request):
     # Allow user to view their profile
     if "user" in request.session and request.session['user'] != {}:
         user = User.objects.get(id=request.session['user'])
-        teams_list = ast.literal_eval(user.teams)
-        team_objects = []
 
-        if len(teams_list) != 0:
-            for name in teams_list:
-                a_team = Team.objects.get(teamName=name)
-                team_objects.append(a_team)
+        try:
+            teams_list = ast.literal_eval(user.teams)
+            team_objects = []
 
-            context = {
-                'has_teams': True,
-                'user': user,
-                'user_teams': team_objects
-            }
+            if len(teams_list) != 0:
+                for name in teams_list:
+                    a_team = Team.objects.get(teamName=name)
+                    team_objects.append(a_team)
 
-        else:
-            context = {
-                'has_teams': False,
-                'user': user,
-            }
+                context = {
+                    'has_teams': True,
+                    'user': user,
+                    'user_teams': team_objects
+                }
 
-        return render(request, 'website/profile.html', context)
+            else:
+                context = {
+                    'has_teams': False,
+                    'user': user,
+                }
+
+            return render(request, 'website/profile.html', context)
+        except Exception:
+            return render(request, 'website/profile.html', {})
 
     else:
         return HttpResponseRedirect('/login')
