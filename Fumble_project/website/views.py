@@ -1,18 +1,18 @@
-from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
+from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.forms import AuthenticationForm
+from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import redirect
 from django.conf import settings
-from django.core import serializers
 from .models import User, Team
 from datetime import datetime
 import logging
 import ast, json
 
-logger = logging.getLogger()
 
+logger = logging.getLogger()
 
 def home(request):
     return render(request, 'website/home.html')
@@ -54,13 +54,28 @@ def teams(request):
 
                     user.save()
                     messages.info(request, f"{name} has been registered as a team.")
+
                     return HttpResponseRedirect('/teams')
 
             except Exception:
                 messages.error(request, "Please enter the correct email.")
                 return HttpResponseRedirect('/teams')
         else:
-            return render(request, 'website/teams.html')
+            # Get a list of all the registered teams
+            all_teams = Team.objects.all()
+
+            if len(all_teams) != 0:
+                context = {
+                    'all_teams': all_teams,
+                    'has_teams': True
+                }
+
+            else:
+                context = {
+                    'has_teams': False
+                }
+
+            return render(request, 'website/teams.html', context)
     else:
         return HttpResponseRedirect('/login')
 
@@ -144,7 +159,6 @@ def map(request):
         return HttpResponseRedirect('/login')
 
 
-def getTeams(request):
-    json_serializer = serializers.get_serializer("json")()
-    teamsjson = serializers.serialize("json", Team.objects.all())
-    return JsonResponse(teamsjson)
+def challenge(request):
+    return render(request, 'website/challenge.html')
+

@@ -9,5 +9,6 @@ urlpatterns = [
     path('profile/', views.profile, name='website-profile'),
     path('map/', views.map, name='website-map'),
     path('teams/', views.teams, name='website-teams'),
+    path('challenge/', views.challenge, name='website-challenge'),
     path('logout/', views.logout_view, name='website-logout'),
 ]
