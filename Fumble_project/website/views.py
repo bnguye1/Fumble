@@ -117,7 +117,6 @@ def logout_view(request):
 
 def register(request):
     if request.method == 'POST':
-        # TODO - Implement adding users to database when register
         password = request.POST["password"]
         email = request.POST["email"]
         user = User(isCapt=False, address="", password=password, email=email)
@@ -184,6 +183,8 @@ def challenge(request):
                           host_accept=True, match_sport=sport, match_time=match_time)
             match.save()
 
+            messages.info(request, f"A match request to team {team2_obj.teamName} has been sent.")
+            return HttpResponseRedirect('/challenge')
         else:
             # Get a list of all the registered teams
             all_teams = Team.objects.all()

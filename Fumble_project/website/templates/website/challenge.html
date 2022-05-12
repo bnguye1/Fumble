@@ -61,6 +61,17 @@
             padding: 40px;
         }
     </style>
+
+    <script>
+        function getTeams() {
+            team1 = document.querySelector("#team1-name-field");
+            team2 = document.querySelector("#team2-name-field");
+            ans1 = team1.options[team1.selectedIndex].value;
+            ans2 = team2.option[team2.selectedIndex].value;
+        }
+
+
+    </script>
 </head>
 <body>
     <ul class="navbar">
@@ -80,10 +91,11 @@
             <div class="form-row">
                 <label class="w-100">
                     <label for="team1-name-field" style="font-weight: bold">Your Team</label>
-                    <select class="custom-select" id="team1-name-field">
+                    <select class="custom-select" name="team1-name-field" id="team1-name-field">
+                        <option disabled selected value>-- Select a team --</option>
                         {% if has_teams %}
                             {% for team in all_teams %}
-                                <option>{{team.teamName}}</option>
+                                <option value="{{team.teamName}}">{{team.teamName}}</option>
                             {% endfor %}
                         {% endif %}
                     </select>
@@ -92,7 +104,8 @@
             <div class="form-row">
                 <label class="w-100">
                     <label for="team2-name-field" style="font-weight: bold">Opposing Team</label>
-                    <select class="custom-select" id="team2-name-field">
+                    <select class="custom-select" name="team2-name-field" id="team2-name-field">
+                        <option disabled selected>-- Select a team --</option>
                         {% if has_teams %}
                             {% for team in all_teams %}
                                 <option>{{team.teamName}}</option>
@@ -114,8 +127,18 @@
                 </label>
             </div>
             <button type="submit" id="challenge-register-btn" class="challenge-register-btn my-4">Submit Challenge</button>
-
         </form>
+        {% if messages %}
+            {% for message in messages %}
+                {% if message.level == DEFAULT_MESSAGE_LEVELS.ERROR %}
+                    <strong style="color: indianred;">{{ message }}</strong>
+                {% endif %}
+                {% if message.level == DEFAULT_MESSAGE_LEVELS.INFO %}
+                    <strong style="color: darkgreen;">{{ message }}</strong>
+                {% endif %}
+
+            {% endfor %}
+        {% endif %}
     </div>
 </body>
 </html>
