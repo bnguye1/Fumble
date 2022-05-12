@@ -33,6 +33,3 @@ class Match(models.Model):
     match_sport = models.TextField(default="")
     match_time = models.TextField(default="")
     match_status = models.TextField(default="Waiting for both teams to accept")
-
-
-

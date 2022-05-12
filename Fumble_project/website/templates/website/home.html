@@ -57,6 +57,18 @@
             position: absolute;
             right: 10px;
         }
+
+        .card {
+            margin: 0 auto;
+
+        }
+        .card-body {
+            font-weight: bold;
+            font-size: 30px;
+        }
+        table.table-responsive {
+            padding: 20px;
+        }
     </style>
 </head>
 
@@ -71,6 +83,58 @@
         <a class="navbar-item" href="http://127.0.0.1:8000/challenge">Challenge</a>
         <a class="navbar-logout" href="http://127.0.0.1:8000/logout">Logout</a>
     </ul>
+    <div class="container">
+        <div class="card w-75">
+            <div class="card-body align-items-center d-flex justify-content-center">
+                Your Matches
+            </div>
+            <div class="row justify-content-center">
+                <div class="col-auto">
+                    <table class="table table-responsive">
+                        <thead class="table">
+                        <tr>
+                            <th scope="col">Opponent</th>
+                            <th scope="col">Win/Loss</th>
+                            <th scope="col">MMR Rating</th>
+                            <th scope="col">Status</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                            {% if has_matches %}
+                                {%  for match in matches %}
+                                <tr>
+                                    <td>
+                                        {% if match.host_team.teamName in user.teams  %}
+                                            {{ match.opponent_team }}
+                                        {% else %}
+                                            {{ match.host_team }}
+                                        {% endif %}
+                                    </td>
+                                    <td>
+                                        {% if match.host_team.teamName in user.teams  %}
+                                            {{ match.host_win }}
+                                        {% else %}
+                                            {{ match.opponent_win }}
+                                        {% endif %}
+                                    </td>
+                                    <td>
+                                        0
+                                    </td>
+                                    <td>
+                                        {{ match.status }}
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                            {% endif %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+
 
 </body>
 
