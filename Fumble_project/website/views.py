@@ -97,7 +97,7 @@ def home(request):
 
                 return render(request, 'website/home.html', context)
             except Exception:
-                return render(request, 'website/home.html', {'user': User.object.get(id=request.session['user'])})
+                return render(request, 'website/home.html', {})
     else:
         return HttpResponseRedirect('/login')
 
@@ -236,9 +236,9 @@ def profile(request):
                 }
 
             return render(request, 'website/profile.html', context)
-        except Exception:
 
-            return render(request, 'website/profile.html', {'user': User.object.get(id=request.session['user'])})
+        except Exception:
+            return render(request, 'website/profile.html', {})
 
     else:
         return HttpResponseRedirect('/login')
