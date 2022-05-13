@@ -34,8 +34,8 @@ def home(request):
                     match.opponent_accept = True
 
             elif match.host_team.captain.id == request.session['user']:
-                if confirm == 'accept':
-                    match.host_accept = True
+                if confirm == 'reject':
+                    match.host_accept = False
 
             # Check if both teams have accepted
             if match.opponent_accept and match.host_accept:
@@ -43,6 +43,21 @@ def home(request):
 
             elif not match.opponent_accept and not match.host_accept:
                 match.match_status = "Cancelled"
+
+            # For future, check for win/loss conditions
+            # Fair note, this is just a stand-in, we do not actually have an MMR system working.
+            if match.host_win and not match.opponent_win:
+                match.match_status = "Completed"
+                match.host_team.mmr += 100
+
+            elif not match.host_win and match.opponent_win:
+                match.match_status = "Completed"
+                match.opponent_team.mmr += 100
+
+            else:
+                match.match_status = "Forfeit"
+                match.opponent_team.mmr = 0
+                match.host_team.mmr = 0
 
             match.save()
             return HttpResponseRedirect('/home')
@@ -54,35 +69,43 @@ def home(request):
             try:
                 teams_list = ast.literal_eval(user.teams)
                 my_match_objects = []
+                my_progress_matches = []
+
                 if len(matches_list) != 0:
                     for match in matches_list:
                         if match.host_team.teamName in teams_list or match.opponent_team.teamName in teams_list:
-                            print(match.match_status)
                             if match.match_status == "Pending":
                                 my_match_objects.append(match)
 
+                            elif match.match_status == "In-progress":
+                                my_progress_matches.append(match)
 
                     context = {
                         'has_matches': True,
+                        'has_progress': True,
                         'user': user,
-                        'matches': my_match_objects
+                        'matches': my_match_objects,
+                        'in_progress': my_progress_matches
                     }
 
                 else:
                     context = {
                         'has_matches': False,
+                        'has_progress': False,
                         'user': user,
                     }
 
                 return render(request, 'website/home.html', context)
             except Exception:
-                return render(request, 'website/home.html', {})
+                return render(request, 'website/home.html', {'user': User.object.get(id=request.session['user'])})
     else:
-        return HttpResponseRedirect('/home')
+        return HttpResponseRedirect('/login')
 
 
 def about(request):
-    return render(request, 'website/about.html')
+    return render(request, 'website/about.html', {})
+
+
 
 
 def teams(request):
@@ -214,7 +237,8 @@ def profile(request):
 
             return render(request, 'website/profile.html', context)
         except Exception:
-            return render(request, 'website/profile.html', {})
+
+            return render(request, 'website/profile.html', {'user': User.object.get(id=request.session['user'])})
 
     else:
         return HttpResponseRedirect('/login')
@@ -222,7 +246,7 @@ def profile(request):
 
 def map(request):
     if "user" in request.session and request.session['user'] != {}:
-        return render(request, 'website/map.html')
+        return render(request, 'website/map.html', {})
 
     else:
         return HttpResponseRedirect('/login')

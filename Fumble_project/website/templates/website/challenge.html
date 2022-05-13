@@ -133,5 +133,12 @@
             {% endfor %}
         {% endif %}
     </div>
+
+    <script>
+        function showhide(id) {
+            let mydiv = document.getElementById(id)
+            mydiv.style.display = (mydiv.style.display !== "none") ? "none" : "block";
+        }
+    </script>
 </body>
 </html>

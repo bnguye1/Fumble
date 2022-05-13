@@ -28,7 +28,7 @@ class Match(models.Model):
     opponent_team = models.ForeignKey(Team, on_delete=models.CASCADE, related_name="opponent_team", default=0)
     host_win = models.BooleanField(default=False)
     opponent_win = models.BooleanField(default=False)
-    host_accept = models.BooleanField(default=False)
+    host_accept = models.BooleanField(default=True)
     opponent_accept = models.BooleanField(default=False)
     match_sport = models.TextField(default="")
     match_time = models.TextField(default="")

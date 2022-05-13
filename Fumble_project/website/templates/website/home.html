@@ -73,7 +73,7 @@
             overflow-x: scroll;
             overflow-y: hidden;
             white-space: nowrap;
-            width: 30%;
+            width: 60%;
             align-items: center;
             padding: 20px;
 
@@ -102,11 +102,45 @@
         <a class="navbar-item"  href="http://127.0.0.1:8000/map"> Map </a>
         <a class="navbar-item" href="http://127.0.0.1:8000/teams">Teams</a>
         <a class="navbar-item" href="http://127.0.0.1:8000/challenge">Challenge</a>
+        <a class="navbar-item" style="color: white;">Logged in as {{user.email}}</a>
         <a class="navbar-logout" href="http://127.0.0.1:8000/logout">Logout</a>
     </ul>
 
+    {% if has_progress %}
+        <div style="text-align: center; padding: 10px;">
+            <h3>Your Active Matches</h3>
+        </div>
+            <div class="container" id="team-register-div">
+                <div class="row justify-content-center">
+                    <div class="col-auto">
+                    <table class="table table-responsive">
+                        <thead class="thead-custom">
+                        <tr>
+                            <th scope="col">Host Team</th>
+                            <th scope="col">Opponent Team</th>
+                            <th scope="col">Sports/Games</th>
+                            <th scope="col">Time</th>
+                            <th scope="col">Status</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {% for match in in_progress %}
+                        <tr>
+                            <td>{{match.host_team.teamName}}</td>
+                            <td>{{match.opponent_team.teamName}}</td>
+                            <td>{{match.match_sport}}</td>
+                            <td>{{match.match_time}}</td>
+                            <td>{{match.match_status}}</td>
+                        </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    {% endif %}
     {% if has_matches %}
-        <div style="text-align: center; padding: 20px;">
+        <div style="text-align: center; padding: 10px;">
             <h3>Your Pending Matches</h3>
         </div>
         <div class="scrolling-wrapper">
@@ -116,23 +150,29 @@
                             {% csrf_token %}
                             <div class="card card-body">
                                 <div style="text-align: center; padding: 20px;">
-                                    <h6 style="font-weight: bold; color: #7214FF;">Match Request</h6>
+                                    <h5 style="font-weight: bold; color: #7214FF;">Match Request</h5>
                                     <div class="form-row">
+                                        <label for="host-team-name" style="font-weight: bold;">Host Team: </label>
                                         <select class="custom-select" name="host-team-name" id="host-team-name">
                                             <option selected>{{match.host_team.teamName}}</option>
                                         </select>
                                     </div>
                                     <div class="form-row">
+                                        <label for="opponent-team-name" style="font-weight: bold;">Opponent Team: </label>
                                         <select class="custom-select" name="opponent-team-name" id="opponent-team-name">
                                             <option selected>{{match.opponent_team.teamName}}</option>
                                         </select>
                                     </div>
                                     <div class="form-row">
+                                        <label for="match-sport" style="font-weight: bold;">Sport/Game: </label>
                                         <select class="custom-select" name="match-sport" id="match-sport">
                                             <option selected>{{match.match_sport}}</option>
                                         </select>
                                     </div>
-                                    <h5>{{match.match_time}}</h5>
+                                    <label for="match-time" style="font-weight: bold;">Time: </label>
+                                    <select class="custom-select" name="match-time" id="match-time">
+                                        <option selected>{{match.match_time}}</option>
+                                    </select>
                                 </div>
                                 <div class="form-row">
                                     <label class="w-100" style="text-align: center;">
