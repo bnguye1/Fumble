@@ -165,8 +165,12 @@ def map(request):
             mileRadius = request.POST["distance"]
             addressCenter = request.POST["address"]
             games = request.POST["games"]#filters based off query and returns results
-            qs = Team.objects.filter(point__distance_gte=(addressCenter, D(mi=mileRadius)), sport=games)
-            return qs #this's the part where the query is output to a table
+            filteredTeams = Team.objects.filter(point__distance_gte=(addressCenter, D(mi=mileRadius)), sport=games)
+            context={
+            'teamsinradius':filteredTeams
+            }
+
+            # return qs #this's the part where the query is output to a table
         return render(request, 'website/map.html', context)
 
     else:

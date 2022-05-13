@@ -230,12 +230,16 @@
             <table class="table table-responsive">
                 <thead class="thead-custom">
                     <tr>
-                        <th scope="col">Col 1</th>
+                        <th scope="col">Teams within radius:</th>
                     </tr>
                 </thead>
                 <tbody>
                     <tr>
-                        <td>asdasda</td>
+                            {% for team in filteredTeams %}
+                                <tr>
+                                    <td> {{ team.teamName}}</td>
+                                </tr>
+                            {% endfor %}
                     </tr>
                 </tbody>
             </table>
