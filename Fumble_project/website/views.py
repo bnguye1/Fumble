@@ -65,9 +65,9 @@ def home(request):
 
         else:
             user = User.objects.get(id=request.session['user'])
-            matches_list = Match.objects.all()
 
             try:
+                matches_list = Match.objects.all()
                 teams_list = ast.literal_eval(user.teams)
                 my_match_objects = []
                 my_progress_matches = []
