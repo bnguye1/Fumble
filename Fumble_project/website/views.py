@@ -8,6 +8,8 @@ from django.shortcuts import redirect
 from django.conf import settings
 from .models import User, Team
 from datetime import datetime
+from django.contrib.gis.measure import D
+
 import logging
 import ast, json
 
@@ -107,8 +109,6 @@ def home(request):
 
 def about(request):
     return render(request, 'website/about.html', {})
-
-
 
 
 def teams(request):
@@ -255,11 +255,21 @@ def map(request):
             'teams': teams,
             'has_teams': True
         }
+        if request.method == "POST": #this takes the input fields from respective forms
+            mileRadius = request.POST["distance"]
+            addressCenter = request.POST["address"]
+            games = request.POST["games"]#filters based off query and returns results
+            filteredTeams = Team.objects.filter(point__distance_gte=(addressCenter, D(mi=mileRadius)), sport=games)
+            context={
+            'teamsinradius':filteredTeams
+            }
 
+            # return qs #this's the part where the query is output to a table
         return render(request, 'website/map.html', context)
 
     else:
         return HttpResponseRedirect('/login')
+
 
 
 def challenge(request):
