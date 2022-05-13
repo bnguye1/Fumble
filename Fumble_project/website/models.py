@@ -32,4 +32,5 @@ class Match(models.Model):
     opponent_accept = models.BooleanField(default=False)
     match_sport = models.TextField(default="")
     match_time = models.TextField(default="")
-    match_status = models.TextField(default="Waiting for both teams to accept")
+    match_status = models.TextField(default="Pending")
+

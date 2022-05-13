@@ -19,9 +19,33 @@ def home(request):
     if "user" in request.session and request.session['user'] != {}:
         if request.method == "POST":
             confirm = request.POST['confirm-box']
-            #match = request.POST['match']
-            print(request.POST['host-team-name'])
-            #print(confirm_result, opponent, host)
+            host = request.POST['host-team-name']
+            opponent = request.POST['opponent-team-name']
+            sport = request.POST['match-sport']
+
+            # Find the match
+            host_team = Team.objects.get(teamName=host)
+            opponent_team = Team.objects.get(teamName=opponent)
+
+            match = Match.objects.get(host_team=host_team, opponent_team=opponent_team, match_sport=sport)
+
+            if match.opponent_team.captain.id == request.session['user']:
+                if confirm == 'accept':
+                    match.opponent_accept = True
+
+            elif match.host_team.captain.id == request.session['user']:
+                if confirm == 'accept':
+                    match.host_accept = True
+
+            # Check if both teams have accepted
+            if match.opponent_accept and match.host_accept:
+                match.match_status = "In-progress"
+
+            elif not match.opponent_accept and not match.host_accept:
+                match.match_status = "Cancelled"
+
+            match.save()
+            return HttpResponseRedirect('/home')
 
         else:
             user = User.objects.get(id=request.session['user'])
@@ -33,7 +57,10 @@ def home(request):
                 if len(matches_list) != 0:
                     for match in matches_list:
                         if match.host_team.teamName in teams_list or match.opponent_team.teamName in teams_list:
-                            my_match_objects.append(match)
+                            print(match.match_status)
+                            if match.match_status == "Pending":
+                                my_match_objects.append(match)
+
 
                     context = {
                         'has_matches': True,
@@ -46,8 +73,6 @@ def home(request):
                         'has_matches': False,
                         'user': user,
                     }
-
-                print(my_match_objects)
 
                 return render(request, 'website/home.html', context)
             except Exception:
@@ -217,7 +242,7 @@ def challenge(request):
 
             # Create match
             match = Match(host_team=team1_obj, opponent_team=team2_obj,
-                          host_accept=True, match_sport=sport, match_time=match_time)
+                          match_sport=sport, match_time=match_time)
             match.save()
 
             messages.info(request, f"A match request to team {team2_obj.teamName} has been sent.")

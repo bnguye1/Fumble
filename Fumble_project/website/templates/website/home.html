@@ -117,9 +117,21 @@
                             <div class="card card-body">
                                 <div style="text-align: center; padding: 20px;">
                                     <h6 style="font-weight: bold; color: #7214FF;">Match Request</h6>
-                                    <h4 class="host-team" id="host-team" name="host-team">{{match.host_team.teamName}}</h4>
-                                    <h4 class="opponent-team" id="opponent-team" name="opponent-team">{{match.opponent_team.teamName}}</h4>
-                                    <h5 class="match-sport" id="match-sport" name="match-sport">{{match.match_sport}}</h5>
+                                    <div class="form-row">
+                                        <select class="custom-select" name="host-team-name" id="host-team-name">
+                                            <option selected>{{match.host_team.teamName}}</option>
+                                        </select>
+                                    </div>
+                                    <div class="form-row">
+                                        <select class="custom-select" name="opponent-team-name" id="opponent-team-name">
+                                            <option selected>{{match.opponent_team.teamName}}</option>
+                                        </select>
+                                    </div>
+                                    <div class="form-row">
+                                        <select class="custom-select" name="match-sport" id="match-sport">
+                                            <option selected>{{match.match_sport}}</option>
+                                        </select>
+                                    </div>
                                     <h5>{{match.match_time}}</h5>
                                 </div>
                                 <div class="form-row">
