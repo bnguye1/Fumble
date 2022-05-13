@@ -4,6 +4,7 @@ from contextlib import contextmanager
 from django.urls import reverse, resolve
 from django.contrib.staticfiles.testing import StaticLiveServerTestCase
 from selenium import webdriver
+from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.common.by import By
 from selenium.webdriver.firefox.webdriver import WebDriver
 from selenium.webdriver.common.keys import Keys
@@ -244,7 +245,7 @@ class LoginTestCase(TestCase):
             login.click()
             self.assertIsNotNone(elem)
 
-class TestPages(SimpleTestCase):
+class TestPages(TestCase):
     def testNavBar(self):
         # Test whether the URL routes correctly to the navigation bar.
         url = reverse('navigation-bar')
@@ -271,6 +272,24 @@ class TestPages(SimpleTestCase):
         driver.get("http://127.0.0.1:8000/map/")
         potential_map = driver.find_element(By.ID, "map")
 
+        #Test whether we can interact with the map.
+        potential_map.click()
+
+        #Tried to test the markers (didn't work):
+        #driver.implicitly_wait(10)
+        #is_marker_placed = driver.find_element(By.CSS_SELECTOR, "Will We Win").click()
+
+
+class MapListTest(StaticLiveServerTestCase):
+    def testList(self):
+        url = reverse('website-map')
+        self.assertEquals(resolve(url).func, map)
+
+        driver = webdriver.Firefox()
+        driver.get("http://127.0.0.1:8000/map/")
+
+        self.assertNotEqual(driver.find_elements(By.NAME, "Evan's Fan Club"), 0)
+        
 # Win/Loss Match table testing
 # NOTE: comment out host_team, opponent_team in models.py Match before running
 # this test script.

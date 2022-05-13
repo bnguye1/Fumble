@@ -1,16 +1,17 @@
-import ast
-import json
-import logging
-from datetime import datetime
-from django.conf import settings
+from django.http import HttpResponse, HttpResponseRedirect
+from django.shortcuts import render
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.forms import AuthenticationForm
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import redirect
-from django.shortcuts import render
+from django.conf import settings
+from .models import User, Team
+from datetime import datetime
+import logging
+import ast, json
 
-from .models import User, Team, Match
+from .models import User, Team
 
 logger = logging.getLogger()
 
@@ -100,7 +101,6 @@ def home(request):
                 return render(request, 'website/home.html', {})
     else:
         return HttpResponseRedirect('/login')
-
 
 def about(request):
     return render(request, 'website/about.html', {})
@@ -200,7 +200,7 @@ def register(request):
     if request.method == 'POST':
         password = request.POST["password"]
         email = request.POST["email"]
-        user = User(isCapt=False, address="", password=password, email=email)
+        user = User(isCapt=False, password=password, email=email)
         user.save()
 
         return HttpResponseRedirect("/login")
@@ -245,8 +245,15 @@ def profile(request):
 
 
 def map(request):
+
     if "user" in request.session and request.session['user'] != {}:
-        return render(request, 'website/map.html', {})
+        teams = Team.objects.all()  # gets all registered team objects from database table
+        context = {
+            'teams': teams,
+            'has_teams': True
+        }
+
+        return render(request, 'website/map.html', context)
 
     else:
         return HttpResponseRedirect('/login')
