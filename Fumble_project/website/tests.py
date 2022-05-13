@@ -10,8 +10,7 @@ from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.ui import WebDriverWait
 from django.test import SimpleTestCase
-from .models import User
-from .models import Team
+from .models import *
 from .views import navbar
 
 
@@ -187,7 +186,7 @@ class LoginTestCase(StaticLiveServerTestCase):
 # Testing database queries
 
 
-class DatabaseTest(TestCase):
+class SimpleQueryTest(TestCase):
     def setUp(self):
         User.objects.create(isCapt=False, locationX=20, locationY=40, teamName="Tigers",
                             password="hashed",email="myemail@email")
@@ -271,3 +270,25 @@ class TestPages(SimpleTestCase):
         driver = webdriver.Firefox()
         driver.get("http://127.0.0.1:8000/map/")
         potential_map = driver.find_element(By.ID, "map")
+
+# Win/Loss Match table testing
+# NOTE: comment out host_team, opponent_team in models.py Match before running
+# this test script.
+class WinLossTest(TestCase):
+    def setUp(self):
+        Match.objects.create(host_win=True)
+        Match.objects.create(opponent_win=True)
+
+    # case for valid host win
+    def testHostWin(self):
+        hostWin = Match.objects.get(host_win=True)
+
+        # if these are equal, valid host win
+        self.assertEqual(hostWin.opponent_win, False)
+
+    # case for valid opponent win
+    def testOppWin(self):
+        oppWin = Match.objects.get(opponent_win=True)
+
+        # if these are equal, valid opponent win
+        self.assertEqual(oppWin.host_win, False)
