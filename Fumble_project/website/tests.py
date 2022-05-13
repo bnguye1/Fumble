@@ -4,14 +4,14 @@ from contextlib import contextmanager
 from django.urls import reverse, resolve
 from django.contrib.staticfiles.testing import StaticLiveServerTestCase
 from selenium import webdriver
+from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.common.by import By
 from selenium.webdriver.firefox.webdriver import WebDriver
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.ui import WebDriverWait
 from django.test import SimpleTestCase
-from .models import User
-from .models import Team
+from .models import *
 from .views import navbar
 
 
@@ -187,7 +187,7 @@ class LoginTestCase(StaticLiveServerTestCase):
 # Testing database queries
 
 
-class DatabaseTest(TestCase):
+class SimpleQueryTest(TestCase):
     def setUp(self):
         User.objects.create(isCapt=False, locationX=20, locationY=40, teamName="Tigers",
                             password="hashed",email="myemail@email")
@@ -245,7 +245,7 @@ class LoginTestCase(TestCase):
             login.click()
             self.assertIsNotNone(elem)
 
-class TestPages(SimpleTestCase):
+class TestPages(TestCase):
     def testNavBar(self):
         # Test whether the URL routes correctly to the navigation bar.
         url = reverse('navigation-bar')
@@ -271,3 +271,43 @@ class TestPages(SimpleTestCase):
         driver = webdriver.Firefox()
         driver.get("http://127.0.0.1:8000/map/")
         potential_map = driver.find_element(By.ID, "map")
+
+        #Test whether we can interact with the map.
+        potential_map.click()
+
+        #Tried to test the markers (didn't work):
+        #driver.implicitly_wait(10)
+        #is_marker_placed = driver.find_element(By.CSS_SELECTOR, "Will We Win").click()
+
+
+class MapListTest(StaticLiveServerTestCase):
+    def testList(self):
+        url = reverse('website-map')
+        self.assertEquals(resolve(url).func, map)
+
+        driver = webdriver.Firefox()
+        driver.get("http://127.0.0.1:8000/map/")
+
+        self.assertNotEqual(driver.find_elements(By.NAME, "Evan's Fan Club"), 0)
+        
+# Win/Loss Match table testing
+# NOTE: comment out host_team, opponent_team in models.py Match before running
+# this test script.
+class WinLossTest(TestCase):
+    def setUp(self):
+        Match.objects.create(host_win=True)
+        Match.objects.create(opponent_win=True)
+
+    # case for valid host win
+    def testHostWin(self):
+        hostWin = Match.objects.get(host_win=True)
+
+        # if these are equal, valid host win
+        self.assertEqual(hostWin.opponent_win, False)
+
+    # case for valid opponent win
+    def testOppWin(self):
+        oppWin = Match.objects.get(opponent_win=True)
+
+        # if these are equal, valid opponent win
+        self.assertEqual(oppWin.host_win, False)
