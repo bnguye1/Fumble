@@ -9,6 +9,43 @@
     <meta name="viewport" content="width=device-width,height=device-height,initial-scale=1">
     <title> Map </title>
 
+		<script type = "module">
+
+		function makeMap(){
+
+				const defLocation = {lat: 39.2543, lng: -76.7100};
+				const map = new google.maps.Map(document.getElementById("map"), {
+				zoom: 15,
+				center: defLocation,
+				});
+
+				"{% for team in teams %}"
+				var address = "{{team.teamAddress}}";
+				var description = "Team Name: " + "{{team.teamName}}";
+				var geocoder = new google.maps.Geocoder();
+				geocoder.geocode( { 'address': address}, function(results, status) {
+        				var marker = new google.maps.Marker({
+            				map: map,
+            				position: results[0].geometry.location,
+            				title: description,
+            				optimized: false
+      		  			});
+      		  			var infoWindow = new google.maps.InfoWindow();
+
+  					marker.addListener("click", () => {
+      					infoWindow.close();
+      					infoWindow.setContent(marker.getTitle());
+      					infoWindow.open(marker.getMap(), marker);
+  				});
+
+  				});
+
+				"{% endfor %}"
+			}
+
+			window.makeMap = makeMap;
+		</script>
+	</head>
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
           integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
@@ -59,36 +96,66 @@
             right: 10px;
         }
 
+        .scroll {
+            overflow-y: scroll;
+            overflow-x: hidden;
+            height: 650px;
+        }
+
+        .searchbox {
+            background-color: #1b1b1b;
+            color: #FFFFFF;
+        }
+
+        .boxcolumn {
+            height: 180px;
+        }
+
+        .challenge {
+            position: absolute;
+            bottom: 3px;
+            right: 3px;
+            border: none;
+            outline: none;
+            width: 100%;
+            background-image: linear-gradient(to bottom right, #5401D6, #7214FF);
+            color: white;
+            border-radius: 20px
+        }
+
+        .searchbutton {
+            border: none;
+            outline: none;
+            width: 100%;
+            height: 100%;
+            background-image: linear-gradient(to bottom right, #5401D6, #7214FF);
+            color: white;
+            border-radius: 20px
+        }
+
+        .inputBox {
+            border: none;
+            outline: none;
+            height: 50px;
+            width: 100%;
+            background: #403F43;
+            border-radius: 20px
+        }
+
         #map {
             height: 900px;
             width: 100%;
             background-color: grey;
         }
     </style>
-
-    <script type="module">
-        function makeMap() {
-            const defLocation = {lat: 39.2543, lng: -76.7100};
-            const map = new google.maps.Map(document.getElementById("map"), {
-                zoom: 15,
-                center: defLocation,
-            });
-
-            const teamOneLoc = new google.maps.Marker({
-                position: defLocation,
-                map: map,
-            });
-        }
-
-        window.makeMap = makeMap;
-    </script>
+    
 </head>
 
 <style>
 
 </style>
 
-<body>
+<body style="background-color: #1b1b1b; overflow-x: hidden;">
     <ul class="navbar">
         <a class="navbar-title" href="http://127.0.0.1:8000/home">Fumble</a>
         <a class="navbar-item" href="http://127.0.0.1:8000/home"> Home </a>
@@ -99,12 +166,68 @@
         <a class="navbar-item" href="http://127.0.0.1:8000/challenge">Challenge</a>
         <a class="navbar-logout" href="http://127.0.0.1:8000/logout">Logout</a>
     </ul>
-    <div id="map"></div>
-        <script async
-                src="https://maps.googleapis.com/maps/api/js?key=sadasd &callback=makeMap&v=weekly"
-                defer>
-
-        </script>
+    <div class="container-fluid" >
+        <div class="row" style="background-color: #1b1b1b;">
+            <div class="col-lg-9 g-0">
+                <div id="map"></div>
+                <script async
+                        src="https://maps.googleapis.com/maps/api/js?key=INSERT API KEY HERE&callback=makeMap&v=weekly"
+                        defer>
+                </script>
+            </div>
+            <div class="col-lg-3 g-3 teamcolumn" style="background-color: #1b1b1b;">
+                <div class="row px-3 scroll" id="list" style="background-color: #1b1b1b;">
+                    {% if has_teams %}
+                        {% for team in teams %}
+                            <div class="container" id="teambox{{ forloop.counter }}" name="{{ team.teamName }}">
+                                <div class="row mt-2">
+                                    <div class="col-sm-8 g-0 boxcolumn" style="position: relative;">
+                                        <h2>{{ team.teamName }}</h2>
+                                        <h6>Description</h6>
+                                        <h6 style="position: absolute; bottom: 0; left: 0;">{{ team.sport }}</h6>
+                                    </div>
+                                    <div class="col-sm-4 g-0" style="position: relative;">
+                                        <button class="challenge" id="challengebutton{{ forloop.counter }}">CHALLENGE</button>
+                                    </div>
+                                </div>
+                            </div>
+                        {% endfor %}
+                    {% endif %}
+                </div>
+                <hr style="height:3px; border-width:0; color:white; background-color:white">
+                <form class="row searchbox" method="post">
+                    <div class="row" style="background-color: #1b1b1b;">
+                        <div class="col-sm-8 fw-bold text-end my-auto">
+                            Distance in Miles:
+                        </div>
+                        <div class="col-sm-4">
+                            <label class="w-100">
+                                <input type="distance" placeholder="25" name="distance" class="form-control inputBox" id="distance">
+                            </label>
+                        </div>
+                    </div>
+                    <div class="row" style="background-color: #1b1b1b;">
+                        <div class="fw-bold">
+                            Address:
+                        </div>
+                        <label class="w-100">
+                            <input type="address" placeholder="123 Placeholder Lane, United States" name="address" class="form-control inputBox" id="address">
+                        </label>
+                        <div class="fw-bold">
+                            Games:
+                        </div>
+                        <div class="col-sm-8">
+                            <label class="w-100">
+                                <input type="games" placeholder="Soccer, Cricket, Starcraft 2" name="games" class="form-control inputBox" id="games">
+                            </label>
+                        </div>
+                        <div class="col-sm-4">
+                            <button class="searchbutton">SEARCH</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </body>
-
 </html>

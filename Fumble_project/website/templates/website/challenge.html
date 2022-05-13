@@ -43,27 +43,102 @@
             position: absolute;
             right: 10px;
         }
+        .form-row {
+            padding: 10px;
+        }
+        .challenge-register-btn {
+            background-image: linear-gradient(to bottom right, #5401D6, #7214FF);
+            font-weight: bold;
+            color: white;
+            border-radius: 30px;
+            border: none;
+            outline: none;
+            height: 50px;
+            width: 15%;
+            cursor: pointer;
+        }
+        .container {
+            padding: 40px;
+        }
     </style>
+
+    <script>
+
+    </script>
 </head>
 <body>
-<ul class="navbar">
-    <a class="navbar-title" href="http://127.0.0.1:8000/home">Fumble</a>
-    <a class="navbar-item" href="http://127.0.0.1:8000/home"> Home </a>
-    <a class="navbar-item" href="http://127.0.0.1:8000/about"> About </a>
-    <a class="navbar-item" href="http://127.0.0.1:8000/profile"> Profile </a>
-    <a class="navbar-item" href="http://127.0.0.1:8000/map"> Map </a>
-    <a class="navbar-item" href="http://127.0.0.1:8000/teams">Teams</a>
-    <a class="navbar-item" href="http://127.0.0.1:8000/challenge">Challenge</a>
-    <a class="navbar-logout" href="http://127.0.0.1:8000/logout">Logout</a>
-</ul>
+    <ul class="navbar">
+        <a class="navbar-title" href="http://127.0.0.1:8000/home">Fumble</a>
+        <a class="navbar-item" href="http://127.0.0.1:8000/home"> Home </a>
+        <a class="navbar-item" href="http://127.0.0.1:8000/about"> About </a>
+        <a class="navbar-item" href="http://127.0.0.1:8000/profile"> Profile </a>
+        <a class="navbar-item" href="http://127.0.0.1:8000/map"> Map </a>
+        <a class="navbar-item" href="http://127.0.0.1:8000/teams">Teams</a>
+        <a class="navbar-item" href="http://127.0.0.1:8000/challenge">Challenge</a>
+        <a class="navbar-logout" href="http://127.0.0.1:8000/logout">Logout</a>
+    </ul>
 
-<script src="https://code.jquery.com/jquery-3.6.0.js"
-        integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk="
-        crossorigin="anonymous"></script>
+    <div class="container" id="challenge">
+        <form id="challenge-form" class="challenge-form" method="post">
+            {% csrf_token %}
+            <div class="form-row">
+                <label class="w-100">
+                    <label for="team1-name-field" style="font-weight: bold">Your Team</label>
+                    <select class="custom-select" name="team1-name-field" id="team1-name-field">
+                        <option disabled selected value>-- Select a team --</option>
+                        {% if has_teams %}
+                            {% for team in all_teams %}
+                                <option value="{{team.teamName}}">{{team.teamName}}</option>
+                            {% endfor %}
+                        {% endif %}
+                    </select>
+                </label>
+            </div>
+            <div class="form-row">
+                <label class="w-100">
+                    <label for="team2-name-field" style="font-weight: bold">Opposing Team</label>
+                    <select class="custom-select" name="team2-name-field" id="team2-name-field">
+                        <option disabled selected>-- Select a team --</option>
+                        {% if has_teams %}
+                            {% for team in all_teams %}
+                                <option>{{team.teamName}}</option>
+                            {% endfor %}
+                        {% endif %}
+                    </select>
+                </label>
+            </div>
+            <div class="form-row">
+                <label class="w-100">
+                    <label for="sports-field" style="font-weight: bold">What game/sport will you challenge in?</label>
+                    <input type="text" placeholder="Enter the challenge sport" name="sports-field" class="form-control custom-class my-2 inputBox" id="sports-field" required>
+                </label>
+            </div>
+            <div class="form-row">
+                <label class="w-100">
+                    <label for="time-field" style="font-weight: bold">What time will this match take at?</label>
+                    <input type="text" placeholder="Enter a time for the match" name="time-field" class="form-control custom-class my-2 inputBox" id="time-field" required>
+                </label>
+            </div>
+            <button type="submit" id="challenge-register-btn" class="challenge-register-btn my-4">Submit</button>
+        </form>
+        {% if messages %}
+            {% for message in messages %}
+                {% if message.level == DEFAULT_MESSAGE_LEVELS.ERROR %}
+                    <strong style="color: indianred;">{{ message }}</strong>
+                {% endif %}
+                {% if message.level == DEFAULT_MESSAGE_LEVELS.INFO %}
+                    <strong style="color: darkgreen;">{{ message }}</strong>
+                {% endif %}
 
-<!-- Include all compiled plugins (below), or include individual files as needed -->
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@3.4.1/dist/js/bootstrap.min.js"
-        integrity="sha384-aJ21OjlMXNL5UyIl/XNwTMqvzeRMZH2w8c5cRVpzpU8Y5bApTppSuUkhZXN0VxHd"
-        crossorigin="anonymous"></script>
+            {% endfor %}
+        {% endif %}
+    </div>
+
+    <script>
+        function showhide(id) {
+            let mydiv = document.getElementById(id)
+            mydiv.style.display = (mydiv.style.display !== "none") ? "none" : "block";
+        }
+    </script>
 </body>
 </html>

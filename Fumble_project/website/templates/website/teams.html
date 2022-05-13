@@ -115,6 +115,51 @@
         <a class="navbar-logout" href="http://127.0.0.1:8000/logout">Logout</a>
     </ul>
     <div class="center-btn">
+        <button class="hide-team-register" id="hide-team-register" onclick="showhide('team-register-div')">Show/Hide Team Registration</button>
+    </div>
+    <div class="container" style="display: none;" id="team-register-div">
+        <h2>Team Registration</h2>
+        <form id="team-register-form" class="team-register-form" method="post">
+            {% csrf_token %}
+            <div class="form-row">
+                <label class="w-100">
+                    <label for="name-field" style="font-weight: bold">Team Name</label>
+                    <input type="text" placeholder="Enter the team's name" name="name-field" class="form-control custom-class my-2 inputBox" id="name-field" required>
+                </label>
+            </div>
+            <div class="form-row">
+                <label class="w-100">
+                    <label for="email-field" style="font-weight: bold">Team Captain</label>
+                    <input type="email" placeholder="Enter captain's email" name="email-field" class="form-control custom-class my-2 inputBox" id="email-field" required>
+                </label>
+            </div>
+            <div class="form-row">
+                <label class="w-100">
+                    <label for="address-field" style="font-weight: bold">Team Address</label>
+                    <input type="text" placeholder="Enter team address" name="address-field" class="form-control custom-class my-2 inputBox" id="address-field" required>
+                </label>
+            </div>
+            <div class="form-row">
+                <label class="w-100">
+                    <label for="sport-field" style="font-weight: bold">Team Sports</label>
+                    <input type="text" placeholder="Enter the team's sport/game (ONE SPORT/GAME ONLY)" name="sport-field" class="form-control custom-class my-2 inputBox" id="sport-field" required>
+                </label>
+            </div>
+            <button type="submit" id="team-register-btn" class="team-register-btn my-4">Register Team</button>
+        </form>
+        {% if messages %}
+            {% for message in messages %}
+                {% if message.level == DEFAULT_MESSAGE_LEVELS.ERROR %}
+                    <strong style="color: indianred;">{{ message }}</strong>
+                {% endif %}
+                {% if message.level == DEFAULT_MESSAGE_LEVELS.INFO %}
+                    <strong style="color: darkgreen;">{{ message }}</strong>
+                {% endif %}
+
+            {% endfor %}
+        {% endif %}
+    </div>
+    <div class="center-btn">
         <button class="hide-teams" id="hide-teams" onclick="showhide('teams-div')">Show/Hide Official Teams</button>
     </div>
     <div class="container2" id="teams-div">
@@ -144,67 +189,8 @@
                     </tbody>
                 </table>
             </div>
-
-        {% if messages %}
-            {% for message in messages %}
-                {% if message.level == DEFAULT_MESSAGE_LEVELS.ERROR %}
-                    <strong style="color: indianred;">{{ message }}</strong>
-                {% endif %}
-                {% if message.level == DEFAULT_MESSAGE_LEVELS.INFO %}
-                    <strong style="color: darkgreen;">{{ message }}</strong>
-                {% endif %}
-
-            {% endfor %}
-        {% endif %}
         </div>
     </div>
-
-    <div class="center-btn">
-        <button class="hide-team-register" id="hide-team-register" onclick="showhide('team-register-div')">Show/Hide Team Registration</button>
-    </div>
-    <div class="container" style="display: none;" id="team-register-div">
-        <h2>Team Registration</h2>
-        <form id="team-register-form" class="team-register-form" method="post">
-            {% csrf_token %}
-            <div class="form-row">
-                <label class="w-100">
-                    <label for="name-field" style="font-weight: bold">Team Name</label>
-                    <input type="text" placeholder="Enter the team's name" name="name-field" class="form-control custom-class my-2 inputBox" id="name-field" required>
-                </label>
-            </div>
-            <div class="form-row">
-                <label class="w-100">
-                    <label for="email-field" style="font-weight: bold">Team Captain</label>
-                    <input type="email" placeholder="Enter captain's email" name="email-field" class="form-control custom-class my-2 inputBox" id="email-field" required>
-                </label>
-            </div>
-            <div class="form-row">
-                <label class="w-100">
-                    <label for="address-field" style="font-weight: bold">Team Address</label>
-                    <input type="text" placeholder="Enter team address" name="address-field" class="form-control custom-class my-2 inputBox" id="address-field" required>
-                </label>
-            </div>
-            <div class="form-row">
-                <label class="w-100">
-                    <label for="sport-field" style="font-weight: bold">Team Sports</label>
-                    <input type="text" placeholder="Enter the team's sports (separate with a comma)" name="sport-field" class="form-control custom-class my-2 inputBox" id="sport-field" required>
-                </label>
-            </div>
-            <button type="submit" id="team-register-btn" class="team-register-btn my-4">Register Team</button>
-        </form>
-        {% if messages %}
-            {% for message in messages %}
-                {% if message.level == DEFAULT_MESSAGE_LEVELS.ERROR %}
-                    <strong style="color: indianred;">{{ message }}</strong>
-                {% endif %}
-                {% if message.level == DEFAULT_MESSAGE_LEVELS.INFO %}
-                    <strong style="color: darkgreen;">{{ message }}</strong>
-                {% endif %}
-
-            {% endfor %}
-        {% endif %}
-    </div>
-
     <script>
         function showhide(id) {
             let mydiv = document.getElementById(id)
