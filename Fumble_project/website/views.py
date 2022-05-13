@@ -38,6 +38,9 @@ def home(request):
                 if confirm == 'reject':
                     match.host_accept = False
 
+    else:
+        return HttpResponseRedirect('/home')
+
             # Check if both teams have accepted
             if match.opponent_accept and match.host_accept:
                 match.match_status = "In-progress"
