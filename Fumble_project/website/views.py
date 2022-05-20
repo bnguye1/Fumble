@@ -1,19 +1,14 @@
-from django.http import HttpResponse, HttpResponseRedirect
+from django.http import HttpResponseRedirect
 from django.shortcuts import render
 from django.contrib import messages
-from django.contrib.auth import authenticate, login, logout
-from django.contrib.auth.forms import AuthenticationForm
-from django.http import HttpResponse, HttpResponseRedirect
-from django.shortcuts import redirect
+from django.contrib.auth import logout
 from django.conf import settings
-from .models import User, Team
+from .models import User, Team, Match
 from datetime import datetime
 from django.contrib.gis.measure import D
 
 import logging
 import ast, json
-
-from .models import User, Team
 
 logger = logging.getLogger()
 
@@ -39,10 +34,7 @@ def home(request):
             elif match.host_team.captain.id == request.session['user']:
                 if confirm == 'reject':
                     match.host_accept = False
-
-    else:
-        return HttpResponseRedirect('/home')
-
+                    
             # Check if both teams have accepted
             if match.opponent_accept and match.host_accept:
                 match.match_status = "In-progress"
@@ -52,18 +44,18 @@ def home(request):
 
             # For future, check for win/loss conditions
             # Fair note, this is just a stand-in, we do not actually have an MMR system working.
-            if match.host_win and not match.opponent_win:
-                match.match_status = "Completed"
-                match.host_team.mmr += 100
+            # if match.host_win and not match.opponent_win:
+                # match.match_status = "Completed"
+                # match.host_team.mmr += 100
 
-            elif not match.host_win and match.opponent_win:
-                match.match_status = "Completed"
-                match.opponent_team.mmr += 100
+            # elif not match.host_win and match.opponent_win:
+                # match.match_status = "Completed"
+                # match.opponent_team.mmr += 100
 
-            else:
-                match.match_status = "Forfeit"
-                match.opponent_team.mmr = 0
-                match.host_team.mmr = 0
+            # else:
+                # match.match_status = "Forfeit"
+                # match.opponent_team.mmr = 0
+                # match.host_team.mmr = 0
 
             match.save()
             return HttpResponseRedirect('/home')
