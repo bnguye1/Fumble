@@ -20,12 +20,13 @@ def home(request):
             host = request.POST['host-team-name']
             opponent = request.POST['opponent-team-name']
             sport = request.POST['match-sport']
+            _time = request.POST['match-time']
 
             # Find the match
             host_team = Team.objects.get(teamName=host)
             opponent_team = Team.objects.get(teamName=opponent)
 
-            match = Match.objects.get(host_team=host_team, opponent_team=opponent_team, match_sport=sport)
+            match = Match.objects.get(host_team=host_team, opponent_team=opponent_team, match_sport=sport, match_time=_time)
 
             if match.opponent_team.captain.id == request.session['user']:
                 if confirm == 'accept':
