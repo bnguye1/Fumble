@@ -12,7 +12,7 @@ Does your team have the skills and coordination to climb to the top?
 Please ensure you have Python 3.8 and/or using Python 3.8. Using a newer version of Python may result in issues with the virtual environment creation.
 
 ### Setup
-Download the release build and open the `Fumble-0.4.20` folder in your preferred code editor.
+Download the release build and open the `Fumble-0.6.9` folder in your preferred code editor.
 
 ### Virtual Environment
 In a terminal, type the following commands to create and enable the virtual environment.
@@ -36,6 +36,17 @@ cd Fumble_project
 pip install -r requirements.txt
 ```
 
+### Generating a Django Secret Key
+Source Credit: https://saasitive.com/tutorial/generate-django-secret-key/
+
+Run the following command in the terminal: 
+```
+python -c 'from django.core.management.utils import get_random_secret_key; \
+            print(get_random_secret_key())'
+```
+Copy the secret key that gets generated and open the `.env` file. Now change the placeholder `INPUT_KEY_HERE` to the key you just copied. 
+This step is crucial in making sure that our Django application runs correctly.
+
 ### Running the app
 
 Make sure you are in the correct folder where the following contents are in:
@@ -43,7 +54,7 @@ Make sure you are in the correct folder where the following contents are in:
 Fumble_project
 testing
 website
-README.md
+.env
 manage.py
 requirements.txt
 ```
