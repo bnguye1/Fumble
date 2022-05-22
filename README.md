@@ -12,7 +12,7 @@ Does your team have the skills and coordination to climb to the top?
 Please ensure you have Python 3.8 and/or using Python 3.8. Using a newer version of Python may result in issues with the virtual environment creation.
 
 ### Setup
-Download the release build and open the `Fumble-0.6.9` folder in your preferred code editor.
+Download the release build, extract the zipped file, and open the folder in your preferred code editor.
 
 ### Virtual Environment
 In a terminal, type the following commands to create and enable the virtual environment.
